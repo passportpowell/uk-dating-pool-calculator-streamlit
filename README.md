@@ -2,7 +2,7 @@
 
 A Streamlit web application that calculates your realistic dating pool size using real UK government statistics from ONS (Office for National Statistics) and other official sources.
 
-[![Live Demo](https://img.shields.io/badge/🚀%20Live%20Demo-Streamlit-FF4B4B?style=for-the-badge)](https://uk-dating-pool-calculator.streamlit.app)
+[![Live Demo](https://img.shields.io/badge/🚀%20Live%20Demo-Streamlit-FF4B4B?style=for-the-badge)](http://99.81.223.163:32768/)
 
 ![Python](https://img.shields.io/badge/python-3.8+-blue.svg)
 ![Streamlit](https://img.shields.io/badge/streamlit-1.28+-red.svg)
@@ -10,7 +10,7 @@ A Streamlit web application that calculates your realistic dating pool size usin
 
 ## 🌐 Live Application
 
-**Try it now:** [https://uk-dating-pool-calculator.streamlit.app](https://uk-dating-pool-calculator.streamlit.app)
+**Try it now:** [http://99.81.223.163:32768/](http://99.81.223.163:32768/)
 
 ## Features
 
