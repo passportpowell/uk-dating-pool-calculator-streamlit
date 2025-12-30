@@ -10,7 +10,7 @@ A Streamlit web application that calculates your realistic dating pool size usin
 
 ## 🌐 Live Application
 
-**Try it now:** [http://99.81.223.163:32768/](http://99.81.223.163:32768/)
+**[Launch Calculator →](http://99.81.223.163:32768/)**
 
 ## Features
 
