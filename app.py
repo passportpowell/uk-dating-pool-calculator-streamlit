@@ -543,37 +543,44 @@ def calculate_children_probability(acceptable_children):
         probability += CHILDREN_DISTRIBUTION[children_status]
     return probability
 
-def calculate_marriage_probability(acceptable_marriage_history, user_gender, looking_for_gender):
+def calculate_marriage_probability(acceptable_marriage_history, user_gender, looking_for_gender, user_orientation):
     """Calculate probability someone has acceptable marriage history
     
     Args:
         acceptable_marriage_history: List of acceptable marriage statuses
         user_gender: Gender of the user ("Male" or "Female")
         looking_for_gender: Gender being sought ("Male", "Female", or "Any")
+        user_orientation: Sexual orientation of user ("Heterosexual/Straight", "Gay or Lesbian", "Bisexual")
     
     Returns:
         Probability (0-1) that someone matches the marriage criteria
     """
-    # Determine if this is a same-sex or opposite-sex relationship
-    if looking_for_gender == "Any":
-        # For bisexual users looking for any gender, use weighted average
-        # Assume they match with opposite-sex at higher rate (more available)
-        opposite_prob = sum(MARRIAGE_HISTORY["opposite-sex"][status] for status in acceptable_marriage_history)
-        same_prob = sum(MARRIAGE_HISTORY["same-sex"][status] for status in acceptable_marriage_history)
-        # Weight by population availability (~93% straight, ~7% LGB)
-        return 0.93 * opposite_prob + 0.07 * same_prob
-    elif user_gender == looking_for_gender:
-        # Same-sex relationship
-        probability = 0
-        for status in acceptable_marriage_history:
-            probability += MARRIAGE_HISTORY["same-sex"][status]
-        return probability
-    else:
-        # Opposite-sex relationship
-        probability = 0
-        for status in acceptable_marriage_history:
-            probability += MARRIAGE_HISTORY["opposite-sex"][status]
-        return probability
+    # Determine which marriage statistics to use based on orientation
+    # For same-sex oriented individuals looking for same sex, use same-sex stats
+    # For heterosexual or opposite-sex scenarios, use opposite-sex stats
+    orientation_key = "opposite-sex"
+    
+    if user_orientation == "Gay or Lesbian":
+        # Gay/Lesbian looking for same sex = same-sex relationship
+        if (user_gender == "Male" and looking_for_gender == "Male") or \
+           (user_gender == "Female" and looking_for_gender == "Female"):
+            orientation_key = "same-sex"
+    elif user_orientation == "Bisexual":
+        # Bisexual people: use same-sex stats if looking for same sex
+        if (user_gender == "Male" and looking_for_gender == "Male") or \
+           (user_gender == "Female" and looking_for_gender == "Female"):
+            orientation_key = "same-sex"
+        # If looking for "Any", use weighted average
+        elif looking_for_gender == "Any":
+            # Return weighted average of both
+            prob_opposite = sum(MARRIAGE_HISTORY["opposite-sex"][status] for status in acceptable_marriage_history)
+            prob_same = sum(MARRIAGE_HISTORY["same-sex"][status] for status in acceptable_marriage_history)
+            return (prob_opposite + prob_same) / 2
+    
+    probability = 0
+    for status in acceptable_marriage_history:
+        probability += MARRIAGE_HISTORY[orientation_key][status]
+    return probability
 
 def calculate_baldness_probability(baldness_preference, age_range):
     """Calculate probability of baldness preference match for males"""
@@ -1183,7 +1190,7 @@ def main():
             children_prob = calculate_children_probability(acceptable_children)
             
             # Marriage history probability (now accounts for same-sex vs opposite-sex relationships)
-            marriage_prob = calculate_marriage_probability(acceptable_marriage_history, user_gender, looking_for)
+            marriage_prob = calculate_marriage_probability(acceptable_marriage_history, user_gender, looking_for, user_orientation)
             
             # Baldness probability (only applies to males)
             if looking_for == "Male":
@@ -1367,31 +1374,78 @@ def main():
                 st.markdown('<div class="info-card">', unsafe_allow_html=True)
                 st.markdown("### 💍 UK Marriage Statistics", unsafe_allow_html=True)
                 st.caption("Based on Office for National Statistics (ONS) data - England & Wales 2022/2023")
+                
+                # Determine which statistics to show based on sexual orientation
+                show_opposite_sex = user_orientation in ["Heterosexual/Straight", "Bisexual"]
+                show_same_sex = user_orientation in ["Gay or Lesbian", "Bisexual"]
+                
+                # Add a note about filtering
+                if user_orientation == "Heterosexual/Straight":
+                    st.info(f"""**📊 Showing Opposite-Sex Marriage Statistics** - These statistics are relevant to your selection of {user_orientation} orientation. Same-sex marriage statistics are hidden as they don't apply to your dating pool.""")
+                elif user_orientation == "Gay or Lesbian":
+                    st.info(f"""**📊 Showing Same-Sex Marriage Statistics** - These statistics are relevant to your selection of {user_orientation} orientation. Opposite-sex marriage statistics are hidden as they don't apply to your dating pool.""")
+                else:  # Bisexual
+                    st.info(f"""**📊 Showing Both Opposite-Sex and Same-Sex Marriage Statistics** - As a {user_orientation} individual, both types of relationships may be relevant to your dating pool.""")
+                
                 st.info("""**📅 Data Update Frequency:** The Office for National Statistics (ONS) typically publishes marriage and divorce statistics annually, with data released approximately 12-18 months after the reference year. The most recent comprehensive data available is from 2022, published in 2023-2024. ONS aims to release these statistics once per year, usually in late summer/autumn. While we are currently in 2025, the 2023 data is expected to be published soon, with 2024 data to follow in 2025-2026.""")
                 st.markdown('</div>', unsafe_allow_html=True)
                 
                 # Marriage rates overview
-                col1, col2, col3 = st.columns(3)
-                with col1:
-                    st.markdown('<div class="info-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">', unsafe_allow_html=True)
-                    st.markdown("#### Total Marriages (2022)")
-                    st.markdown("### 249,793")
-                    st.caption("England & Wales")
-                    st.markdown('</div>', unsafe_allow_html=True)
-                
-                with col2:
-                    st.markdown('<div class="info-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">', unsafe_allow_html=True)
-                    st.markdown("#### Opposite-Sex")
-                    st.markdown("### 242,842 (97.2%)")
-                    st.caption("Heterosexual marriages")
-                    st.markdown('</div>', unsafe_allow_html=True)
-                
-                with col3:
-                    st.markdown('<div class="info-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white;">', unsafe_allow_html=True)
-                    st.markdown("#### Same-Sex")
-                    st.markdown("### 6,951 (2.8%)")
-                    st.caption("3,474 male, 3,477 female")
-                    st.markdown('</div>', unsafe_allow_html=True)
+                if show_opposite_sex and show_same_sex:
+                    # Show all three for bisexual
+                    col1, col2, col3 = st.columns(3)
+                    with col1:
+                        st.markdown('<div class="info-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">', unsafe_allow_html=True)
+                        st.markdown("#### Total Marriages (2022)")
+                        st.markdown("### 249,793")
+                        st.caption("England & Wales")
+                        st.markdown('</div>', unsafe_allow_html=True)
+                    
+                    with col2:
+                        st.markdown('<div class="info-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">', unsafe_allow_html=True)
+                        st.markdown("#### Opposite-Sex")
+                        st.markdown("### 242,842 (97.2%)")
+                        st.caption("Heterosexual marriages")
+                        st.markdown('</div>', unsafe_allow_html=True)
+                    
+                    with col3:
+                        st.markdown('<div class="info-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white;">', unsafe_allow_html=True)
+                        st.markdown("#### Same-Sex")
+                        st.markdown("### 6,951 (2.8%)")
+                        st.caption("3,474 male, 3,477 female")
+                        st.markdown('</div>', unsafe_allow_html=True)
+                elif show_opposite_sex:
+                    # Show only opposite-sex for heterosexual
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        st.markdown('<div class="info-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">', unsafe_allow_html=True)
+                        st.markdown("#### Total Marriages (2022)")
+                        st.markdown("### 249,793")
+                        st.caption("England & Wales (all types)")
+                        st.markdown('</div>', unsafe_allow_html=True)
+                    
+                    with col2:
+                        st.markdown('<div class="info-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">', unsafe_allow_html=True)
+                        st.markdown("#### Opposite-Sex")
+                        st.markdown("### 242,842 (97.2%)")
+                        st.caption("Relevant to your dating pool")
+                        st.markdown('</div>', unsafe_allow_html=True)
+                else:
+                    # Show only same-sex for gay/lesbian
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        st.markdown('<div class="info-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">', unsafe_allow_html=True)
+                        st.markdown("#### Total Marriages (2022)")
+                        st.markdown("### 249,793")
+                        st.caption("England & Wales (all types)")
+                        st.markdown('</div>', unsafe_allow_html=True)
+                    
+                    with col2:
+                        st.markdown('<div class="info-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white;">', unsafe_allow_html=True)
+                        st.markdown("#### Same-Sex")
+                        st.markdown("### 6,951 (2.8%)")
+                        st.caption("3,474 male, 3,477 female - Relevant to your dating pool")
+                        st.markdown('</div>', unsafe_allow_html=True)
                 
                 # Historical trend
                 with st.expander("📈 Marriage Trends (2013-2022)", expanded=False):
@@ -1417,10 +1471,12 @@ def main():
                     same_sex = [0, 2372, 4225, 4499, 4507, 4634, 4522, 2852, 4703, 6951]
                     
                     fig = go.Figure()
-                    fig.add_trace(go.Scatter(x=years, y=opposite_sex, name='Opposite-Sex', 
-                                            line=dict(color='#f5576c', width=3)))
-                    fig.add_trace(go.Scatter(x=years, y=same_sex, name='Same-Sex',
-                                            line=dict(color='#4facfe', width=3)))
+                    if show_opposite_sex:
+                        fig.add_trace(go.Scatter(x=years, y=opposite_sex, name='Opposite-Sex', 
+                                                line=dict(color='#f5576c', width=3)))
+                    if show_same_sex:
+                        fig.add_trace(go.Scatter(x=years, y=same_sex, name='Same-Sex',
+                                                line=dict(color='#4facfe', width=3)))
                     fig.update_layout(
                         title='Marriage Trends Over Time',
                         xaxis_title='Year',
@@ -1429,14 +1485,27 @@ def main():
                         height=400,
                         hovermode='x unified'
                     )
-                    st.plotly_chart(fig, use_container_width=True)
+                    st.plotly_chart(fig, use_container_width=True, key='marriage_trends_first_chart')
                     
-                    st.markdown("""**Key Insights:**
+                    # Filter insights based on orientation
+                    if show_opposite_sex and show_same_sex:
+                        st.markdown("""**Key Insights:**
                 - **2014 spike:** First full year of same-sex marriage legalization created pent-up demand
                 - **2020 crash:** COVID-19 pandemic caused 39% drop in marriages (lockdowns prevented ceremonies)
                 - **Stable trend:** Opposite-sex marriages hover around 240,000 annually (excluding pandemic)
                 - **Same-sex growth:** Increased from 2,372 (2014) to 6,951 (2022) - nearly 3x growth
                 - **Overall trend:** Marriage rates remain relatively stable but lower than historical peaks""")
+                    elif show_opposite_sex:
+                        st.markdown("""**Key Insights (Opposite-Sex Marriages):**
+                - **2020 crash:** COVID-19 pandemic caused 39% drop in marriages (lockdowns prevented ceremonies)
+                - **Stable trend:** Opposite-sex marriages hover around 240,000 annually (excluding pandemic)
+                - **Overall trend:** Marriage rates remain relatively stable but lower than historical peaks""")
+                    else:
+                        st.markdown("""**Key Insights (Same-Sex Marriages):**
+                - **2014 legalization:** Same-sex marriage became legal in March 2014, creating pent-up demand
+                - **Growth trend:** Increased from 2,372 (2014) to 6,951 (2022) - nearly 3x growth
+                - **2020 impact:** COVID-19 pandemic also affected same-sex marriages (drop to 2,852)
+                - **2022 recovery:** Strong rebound to 6,951 marriages, highest on record""")
                     st.markdown('</div>', unsafe_allow_html=True)
                 
                 # Age statistics
@@ -1485,7 +1554,7 @@ def main():
                         barmode='group',
                         height=400
                     )
-                    st.plotly_chart(fig, use_container_width=True)
+                    st.plotly_chart(fig, use_container_width=True, key='marriage_age_distribution_chart')
                     
                     st.markdown("""**Key Insights:**
                     - **Peak ages:** Most marriages occur at ages 30-34 for both men (25.8%) and women (26.2%)
@@ -1534,18 +1603,21 @@ def main():
                     dissolutions = [0, 0, 0, 0, 0, 0, 0, 167, 6385, 5734, 5006, 3956, 7525, 2112]
                     
                     fig = go.Figure()
-                    fig.add_trace(go.Scatter(x=years_divorce, y=divorces, name='Divorces (Opposite-Sex)', 
-                                            line=dict(color='#f5576c', width=3), fill='tonexty'))
-                    fig.add_trace(go.Scatter(x=years_divorce, y=dissolutions, name='Civil Partnership Dissolutions',
-                                            line=dict(color='#4facfe', width=3)))
+                    if show_opposite_sex:
+                        fig.add_trace(go.Scatter(x=years_divorce, y=divorces, name='Divorces (Opposite-Sex)', 
+                                                line=dict(color='#f5576c', width=3), fill='tonexty'))
+                    if show_same_sex:
+                        fig.add_trace(go.Scatter(x=years_divorce, y=dissolutions, name='Civil Partnership Dissolutions',
+                                                line=dict(color='#4facfe', width=3)))
                     
-                    # Add annotations for key events
-                    fig.add_annotation(x=1971, y=74437, text="1969 Reform Act<br>takes effect",
-                                      showarrow=True, arrowhead=2, ax=-40, ay=-40)
-                    fig.add_annotation(x=1993, y=165658, text="Peak: 165,658<br>divorces (1993)",
-                                      showarrow=True, arrowhead=2, ax=0, ay=-50)
-                    fig.add_annotation(x=2022, y=80057, text="2022: No-fault<br>reform",
-                                      showarrow=True, arrowhead=2, ax=40, ay=-40)
+                    # Add annotations for key events based on what's shown
+                    if show_opposite_sex:
+                        fig.add_annotation(x=1971, y=74437, text="1969 Reform Act<br>takes effect",
+                                          showarrow=True, arrowhead=2, ax=-40, ay=-40)
+                        fig.add_annotation(x=1993, y=165658, text="Peak: 165,658<br>divorces (1993)",
+                                          showarrow=True, arrowhead=2, ax=0, ay=-50)
+                        fig.add_annotation(x=2022, y=80057, text="2022: No-fault<br>reform",
+                                          showarrow=True, arrowhead=2, ax=40, ay=-40)
                     
                     fig.update_layout(
                         title='Divorce and Dissolution Trends Over Time (1963-2022)',
@@ -1555,7 +1627,7 @@ def main():
                         height=500,
                         hovermode='x unified'
                     )
-                    st.plotly_chart(fig, use_container_width=True)
+                    st.plotly_chart(fig, use_container_width=True, key='divorce_trends_chart')
                     
                     st.markdown("""**Key Insights:**
                     - **Dramatic increase 1963-1993:** Divorces rose from 32,000 to peak of 165,658 (actual peak was 1993)
@@ -1586,55 +1658,84 @@ def main():
                     - Rate varies by age at marriage, education, income, cohabitation history""")
                     st.markdown("")
                     
-                    divorce_overview = {
-                        "Category": ["Opposite-Sex Divorces", "Same-Sex Divorces", "Civil Partnership (Male)", "Civil Partnership (Female)"],
-                        "Total Cases": ["80,057", "1,170", "422", "494"],
-                        "Mean Duration": ["12.7 years", "5.4 years", "7.8 years", "6.2 years"],
-                        "Median Age at Divorce": ["M: 46.4, F: 43.9", "M: 42.1, F: 40.8", "45.3", "43.6"],
-                        "Rate per 1,000": ["8.2", "16.8", "N/A", "N/A"]
-                    }
+                    # Filter divorce overview based on orientation
+                    if show_opposite_sex and show_same_sex:
+                        divorce_overview = {
+                            "Category": ["Opposite-Sex Divorces", "Same-Sex Divorces", "Civil Partnership (Male)", "Civil Partnership (Female)"],
+                            "Total Cases": ["80,057", "1,170", "422", "494"],
+                            "Mean Duration": ["12.7 years", "5.4 years", "7.8 years", "6.2 years"],
+                            "Median Age at Divorce": ["M: 46.4, F: 43.9", "M: 42.1, F: 40.8", "45.3", "43.6"],
+                            "Rate per 1,000": ["8.2", "16.8", "N/A", "N/A"]
+                        }
+                    elif show_opposite_sex:
+                        divorce_overview = {
+                            "Category": ["Opposite-Sex Divorces"],
+                            "Total Cases": ["80,057"],
+                            "Mean Duration": ["12.7 years"],
+                            "Median Age at Divorce": ["M: 46.4, F: 43.9"],
+                            "Rate per 1,000": ["8.2"]
+                        }
+                    else:
+                        divorce_overview = {
+                            "Category": ["Same-Sex Divorces", "Civil Partnership (Male)", "Civil Partnership (Female)"],
+                            "Total Cases": ["1,170", "422", "494"],
+                            "Mean Duration": ["5.4 years", "7.8 years", "6.2 years"],
+                            "Median Age at Divorce": ["M: 42.1, F: 40.8", "45.3", "43.6"],
+                            "Rate per 1,000": ["16.8", "N/A", "N/A"]
+                        }
                     st.dataframe(divorce_overview, hide_index=True, use_container_width=True)
                     
                     # Comparison accounting for different population sizes
-                    st.markdown("")
-                    st.markdown("#### 📊 Comparative Analysis (Rate-Adjusted)")
-                    st.markdown("""**How this is calculated:** These rates are 'rate-adjusted' to allow fair comparison:
-                    - **Divorce rate per 1,000 marriages** = (Number of divorces ÷ Number of married couples) × 1,000
-                      - Opposite-sex: 80,057 divorces ÷ ~9.8 million married couples = 8.2 per 1,000 annually
-                      - Same-sex: 1,170 divorces ÷ ~69,700 married couples = 16.8 per 1,000 annually
-                    - **Duration vs baseline** = (Same-sex duration ÷ Opposite-sex duration) × 100 = (5.4 ÷ 12.7) × 100 = 42.5%
-                    - **Rate comparison** = (Same-sex rate ÷ Opposite-sex rate - 1) × 100 = (16.8 ÷ 8.2 - 1) × 100 = 105% higher
-                    
-                    This controls for population size differences so we can compare like-with-like.""")
-                    st.markdown("")
-                    comparison_data = {
-                        "Metric": [
-                            "Divorce rate per 1,000 marriages",
-                            "Mean marriage duration",
-                            "Duration vs opposite-sex baseline",
-                            "Median divorce age gap (M-F)"
-                        ],
-                        "Opposite-Sex": [
-                            "8.2",
-                            "12.7 years",
-                            "Baseline (100%)",
-                            "2.5 years"
-                        ],
-                        "Same-Sex": [
-                            "16.8 (↑105% higher)",
-                            "5.4 years",
-                            "42.5% of baseline",
-                            "1.3 years"
-                        ]
-                    }
-                    st.dataframe(comparison_data, hide_index=True, use_container_width=True)
-                    st.caption("Rate-adjusted: Accounts for different population sizes. Same-sex marriages are newer (legal since 2014), so shorter durations expected.")
+                    if show_opposite_sex and show_same_sex:
+                        st.markdown("")
+                        st.markdown("#### 📊 Comparative Analysis (Rate-Adjusted)")
+                        st.markdown("""**How this is calculated:** These rates are 'rate-adjusted' to allow fair comparison:
+                        - **Divorce rate per 1,000 marriages** = (Number of divorces ÷ Number of married couples) × 1,000
+                          - Opposite-sex: 80,057 divorces ÷ ~9.8 million married couples = 8.2 per 1,000 annually
+                          - Same-sex: 1,170 divorces ÷ ~69,700 married couples = 16.8 per 1,000 annually
+                        - **Duration vs baseline** = (Same-sex duration ÷ Opposite-sex duration) × 100 = (5.4 ÷ 12.7) × 100 = 42.5%
+                        - **Rate comparison** = (Same-sex rate ÷ Opposite-sex rate - 1) × 100 = (16.8 ÷ 8.2 - 1) × 100 = 105% higher
+                        
+                        This controls for population size differences so we can compare like-with-like.""")
+                        st.markdown("")
+                        comparison_data = {
+                            "Metric": [
+                                "Divorce rate per 1,000 marriages",
+                                "Mean marriage duration",
+                                "Duration vs opposite-sex baseline",
+                                "Median divorce age gap (M-F)"
+                            ],
+                            "Opposite-Sex": [
+                                "8.2",
+                                "12.7 years",
+                                "Baseline (100%)",
+                                "2.5 years"
+                            ],
+                            "Same-Sex": [
+                                "16.8 (↑105% higher)",
+                                "5.4 years",
+                                "42.5% of baseline",
+                                "1.3 years"
+                            ]
+                        }
+                        st.dataframe(comparison_data, hide_index=True, use_container_width=True)
+                        st.caption("Rate-adjusted: Accounts for different population sizes. Same-sex marriages are newer (legal since 2014), so shorter durations expected.")
                     
                     # Chart comparing divorce rates and duration
+                    st.markdown("")
                     fig = go.Figure()
-                    categories = ['Opposite-Sex', 'Same-Sex', 'Civil Partner (M)', 'Civil Partner (F)']
-                    durations = [12.7, 5.4, 7.8, 6.2]
-                    colors = ['#667eea', '#4facfe', '#f093fb', '#f5576c']
+                    if show_opposite_sex and show_same_sex:
+                        categories = ['Opposite-Sex', 'Same-Sex', 'Civil Partner (M)', 'Civil Partner (F)']
+                        durations = [12.7, 5.4, 7.8, 6.2]
+                        colors = ['#667eea', '#4facfe', '#f093fb', '#f5576c']
+                    elif show_opposite_sex:
+                        categories = ['Opposite-Sex']
+                        durations = [12.7]
+                        colors = ['#667eea']
+                    else:
+                        categories = ['Same-Sex', 'Civil Partner (M)', 'Civil Partner (F)']
+                        durations = [5.4, 7.8, 6.2]
+                        colors = ['#4facfe', '#f093fb', '#f5576c']
                     
                     fig.add_trace(go.Bar(
                         x=categories,
@@ -1650,15 +1751,31 @@ def main():
                         template='plotly_dark',
                         height=400
                     )
-                    st.plotly_chart(fig, use_container_width=True)
+                    st.plotly_chart(fig, use_container_width=True, key='marriage_duration_chart')
                     
-                    st.markdown("""**Key Insights:**
-                    - **Opposite-sex divorce rate:** 8.2 per 1,000 married people = ~0.82% divorce annually
-                    - **Same-sex higher rate:** 16.8 per 1,000 = double the opposite-sex rate (but sample is newer)
-                    - **Shorter same-sex duration:** 5.4 years vs 12.7 years - BUT same-sex marriage only legal since 2014, so maximum possible duration is 8-9 years in 2022 data
-                    - **Civil partnerships:** Middle ground at 6-8 years (these have existed since 2005, longer track record)
-                    - **Age at divorce:** People divorce in their 40s on average - men slightly older
-                    - **Why shorter same-sex duration?** New marriages haven't had time to reach 10+ years yet. Early adopters may have had relationship problems. More data needed after 2030.""")
+                    # Filter insights based on orientation
+                    if show_opposite_sex and show_same_sex:
+                        st.markdown("""**Key Insights:**
+                        - **Opposite-sex divorce rate:** 8.2 per 1,000 married people = ~0.82% divorce annually
+                        - **Same-sex higher rate:** 16.8 per 1,000 = double the opposite-sex rate (but sample is newer)
+                        - **Shorter same-sex duration:** 5.4 years vs 12.7 years - BUT same-sex marriage only legal since 2014, so maximum possible duration is 8-9 years in 2022 data
+                        - **Civil partnerships:** Middle ground at 6-8 years (these have existed since 2005, longer track record)
+                        - **Age at divorce:** People divorce in their 40s on average - men slightly older
+                        - **Why shorter same-sex duration?** New marriages haven't had time to reach 10+ years yet. Early adopters may have had relationship problems. More data needed after 2030.""")
+                    elif show_opposite_sex:
+                        st.markdown("""**Key Insights (Opposite-Sex Marriages):**
+                        - **Divorce rate:** 8.2 per 1,000 married people = ~0.82% divorce annually
+                        - **Mean duration:** 12.7 years before divorce
+                        - **Median age at divorce:** Men 46.4 years, Women 43.9 years
+                        - **Long-term stability:** About 52% of marriages survive 30+ years""")
+                    else:
+                        st.markdown("""**Key Insights (Same-Sex Marriages & Civil Partnerships):**
+                        - **Same-sex divorce rate:** 16.8 per 1,000 = higher than opposite-sex (but newer sample)
+                        - **Mean duration:** 5.4 years (same-sex marriages), 6-8 years (civil partnerships)
+                        - **Historical context:** Same-sex marriage only legal since 2014, so maximum duration is 8-9 years in 2022 data
+                        - **Civil partnerships:** Existed since 2005, providing longer track record (7-8 year average)
+                        - **Age at dissolution:** Slightly younger than opposite-sex divorces
+                        - **Why shorter duration?** New marriages haven't had time to reach 10+ years yet. More data needed after 2030.""")
                     st.markdown('</div>', unsafe_allow_html=True)
                 
                 # Who initiates divorce
@@ -1692,7 +1809,7 @@ def main():
                         template='plotly_dark',
                         height=400
                     )
-                    st.plotly_chart(fig, use_container_width=True)
+                    st.plotly_chart(fig, use_container_width=True, key='divorce_initiator_chart')
                     
                     st.markdown("""**Key Insights:**
                     - **Women dominate initiation:** 63% of divorces filed by wives vs 30% by husbands
@@ -1753,7 +1870,7 @@ def main():
                         template='plotly_dark',
                         height=400
                     )
-                    st.plotly_chart(fig, use_container_width=True)
+                    st.plotly_chart(fig, use_container_width=True, key='divorce_grounds_chart')
                     
                     st.markdown("""**Key Insights:**
                     - **No-fault revolution:** 93.1% now use simple "irretrievable breakdown" without proving fault
@@ -1829,7 +1946,7 @@ def main():
                             height=500,
                             margin=dict(l=150)
                         )
-                        st.plotly_chart(fig, use_container_width=True)
+                        st.plotly_chart(fig, use_container_width=True, key='real_divorce_reasons_chart')
                     
                     st.markdown("""**Key Insights:**
                     - **Top 2 reasons:** "Growing apart" (55%) and "lack of communication" (53%) - these are gradual, not sudden events
@@ -2561,7 +2678,7 @@ def main():
             height=400,
             hovermode='x unified'
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key='marriage_trends_main_chart')
         
         st.markdown("""**Key Insights:**
         - **2014 spike:** First full year of same-sex marriage legalization created pent-up demand
@@ -2616,7 +2733,7 @@ def main():
             height=400,
             barmode='group'
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key='marriage_age_main_chart')
         
         st.markdown("""**Key Insights:**
         - **Peak marriage age:** 30-34 for both men (25.8%) and women (26.2%)
@@ -2671,7 +2788,7 @@ def main():
             template='plotly_dark',
             height=400
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key='marriage_duration_main_chart')
         
         st.markdown("""**Key Insights:**
         - **Opposite-sex divorce rate:** 8.2 per 1,000 married people = ~0.82% divorce annually
@@ -2712,7 +2829,7 @@ def main():
             template='plotly_dark',
             height=400
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key='divorce_initiator_main_chart')
         
         st.markdown("""**Key Insights:**
         - **Women dominate initiation:** 63% of divorces filed by wives vs 30% by husbands
