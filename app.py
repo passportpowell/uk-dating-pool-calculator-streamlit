@@ -2297,7 +2297,8 @@ def main():
         
         11. **Marriage History**
            - Source: [ONS Marriage Statistics 2022](https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/marriagecohabitationandcivilpartnerships/bulletins/marriagesinenglandandwalesprovisional/2022)
-           - Distribution by marital status: Never married (42%), Currently married (46%), Divorced (9%), Widowed (3%)
+           - Distribution by marital status for opposite-sex: Never married (42%), Currently married (46%), Divorced (9%), Widowed (3%)
+           - Distribution for same-sex (adjusted for legalization in 2014): Never married (89%), Currently married (8%), Divorced (2%), Widowed (1%)
         
         12. **Male Pattern Baldness**
            - Source: [British Association of Dermatologists](https://www.bad.org.uk/) & [Academic Research on Androgenetic Alopecia](https://pubmed.ncbi.nlm.nih.gov/28396101/)
