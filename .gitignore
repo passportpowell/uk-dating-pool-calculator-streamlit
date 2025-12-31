@@ -43,3 +43,11 @@ Thumbs.db
 # Environment
 .env
 .venv
+
+#add files containing copy Copy is in the filename
+*Copy*
+*copy*
+*COPY*
+* - Copy.*
+* - copy.*
+* - COPY.*  

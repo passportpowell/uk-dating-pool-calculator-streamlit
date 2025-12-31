@@ -13,26 +13,31 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS
+# Custom CSS - Dark Mode Optimized
 st.markdown("""
     <style>
+    /* Main header - bright gradient for visibility in dark mode */
     .main-header {
         font-size: 3.5rem;
         font-weight: 800;
         text-align: center;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #8b9eff 0%, #9d7bc4 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
         margin-bottom: 0.5rem;
         letter-spacing: -1px;
     }
+    
+    /* Sub-header - lighter color for dark mode */
     .sub-header {
         text-align: center;
-        color: #666;
+        color: #b0b0b0;
         font-size: 1.2rem;
         margin-bottom: 2rem;
     }
+    
+    /* Result box - vibrant gradient that works in dark mode */
     .result-box {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         padding: 3rem 2rem;
@@ -40,32 +45,43 @@ st.markdown("""
         text-align: center;
         color: white;
         margin: 2rem 0;
-        box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+        border: 1px solid rgba(139, 158, 255, 0.3);
     }
+    
     .result-percentage {
         font-size: 5rem;
         font-weight: 800;
         margin: 1rem 0;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
     }
+    
     .result-count {
         font-size: 1.8rem;
         opacity: 0.95;
         font-weight: 500;
     }
+    
+    /* Info cards - theme aware with semi-transparent background */
     .info-card {
-        background: white;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
         padding: 1.5rem;
         border-radius: 15px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         margin-bottom: 1.5rem;
-        border-left: 4px solid #667eea;
+        border-left: 4px solid #8b9eff;
+        border: 1px solid rgba(139, 158, 255, 0.2);
     }
+    
     .info-card h3 {
-        color: #667eea;
+        color: #8b9eff;
         margin-top: 0;
         font-size: 1.3rem;
+        font-weight: 600;
     }
+    
+    /* Metric highlights - brighter for dark mode */
     .metric-highlight {
         background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
         color: white;
@@ -74,17 +90,99 @@ st.markdown("""
         font-weight: 600;
         display: inline-block;
         margin: 0.2rem;
+        box-shadow: 0 2px 8px rgba(240, 147, 251, 0.3);
     }
+    
+    /* Progress bars */
     .stProgress > div > div > div > div {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
-    /* Make sidebar more modern */
+    
+    /* Sidebar styling for dark mode */
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+        background: rgba(0, 0, 0, 0.2);
     }
-    /* Improve dataframe styling */
+    
+    /* Make sidebar widgets more visible */
+    [data-testid="stSidebar"] .stSelectbox label,
+    [data-testid="stSidebar"] .stMultiSelect label,
+    [data-testid="stSidebar"] .stSlider label,
+    [data-testid="stSidebar"] .stCheckbox label,
+    [data-testid="stSidebar"] .stNumberInput label {
+        color: #e0e0e0 !important;
+        font-weight: 500;
+    }
+    
+    /* Improve dataframe styling for dark mode */
     .dataframe {
         font-size: 0.95rem;
+    }
+    
+    /* Make dataframes more readable in dark mode */
+    div[data-testid="stDataFrame"] {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 10px;
+        padding: 0.5rem;
+        border: 1px solid rgba(139, 158, 255, 0.2);
+    }
+    
+    /* Improve tab styling */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+        background-color: rgba(255, 255, 255, 0.03);
+        padding: 10px;
+        border-radius: 10px;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-weight: 500;
+        border: 1px solid rgba(139, 158, 255, 0.2);
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white !important;
+        border: 1px solid rgba(139, 158, 255, 0.5);
+    }
+    
+    /* Improve expander styling */
+    .streamlit-expanderHeader {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        border: 1px solid rgba(139, 158, 255, 0.2);
+        font-weight: 500;
+    }
+    
+    /* Better text contrast */
+    p, li, span, div {
+        color: inherit;
+    }
+    
+    /* Markdown headers */
+    h1, h2, h3, h4 {
+        color: #e0e0e0;
+    }
+    
+    /* Caption text should be lighter but readable */
+    .caption {
+        color: #b0b0b0 !important;
+    }
+    
+    /* Links should be visible */
+    a {
+        color: #8b9eff !important;
+    }
+    
+    a:hover {
+        color: #a8b8ff !important;
+    }
+    
+    /* Make metric values stand out */
+    [data-testid="stMetricValue"] {
+        color: #8b9eff;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -139,6 +237,8 @@ FEMALE_HEIGHT_MEAN = 161.6
 FEMALE_HEIGHT_STD = 6.5
 
 # Income brackets (% of working age population)
+# Income brackets (% of working age population)
+# Source: ONS ASHE 2023 + HMRC Self Assessment data for high earners
 INCOME_DISTRIBUTION_MALE = {
     "Under £20k": 0.25,
     "£20k-£30k": 0.22,
@@ -146,7 +246,11 @@ INCOME_DISTRIBUTION_MALE = {
     "£40k-£50k": 0.13,
     "£50k-£75k": 0.14,
     "£75k-£100k": 0.05,
-    "£100k+": 0.03
+    "£100k-£150k": 0.02,  # HMRC Self Assessment data
+    "£150k-£250k": 0.007, # HMRC: ~400k taxpayers
+    "£250k-£500k": 0.003, # HMRC: ~180k taxpayers
+    "£500k-£1M": 0.0006,  # HMRC: ~35k taxpayers
+    "£1M+": 0.0004        # HMRC: ~23k taxpayers (millionaires+)
 }
 
 INCOME_DISTRIBUTION_FEMALE = {
@@ -156,7 +260,11 @@ INCOME_DISTRIBUTION_FEMALE = {
     "£40k-£50k": 0.11,
     "£50k-£75k": 0.10,
     "£75k-£100k": 0.03,
-    "£100k+": 0.02
+    "£100k-£150k": 0.015, # HMRC Self Assessment data
+    "£150k-£250k": 0.003, # HMRC: ~180k taxpayers
+    "£250k-£500k": 0.0012,# HMRC: ~70k taxpayers
+    "£500k-£1M": 0.0002,  # HMRC: ~12k taxpayers
+    "£1M+": 0.0001        # HMRC: ~6k taxpayers (millionaires+)
 }
 
 # Education levels (% of adults)
@@ -206,7 +314,7 @@ MARRIAGE_HISTORY = {
 }
 
 # Male baldness distribution by age
-# Source: British Association of Dermatologists / Academic studies
+# Source: British Association of Dermatologists & Academic research on androgenetic alopecia
 BALDNESS_BY_AGE = {
     "18-29": 0.16,  # 16% experiencing hair loss
     "30-39": 0.32,  # 32% with noticeable thinning/baldness
@@ -357,7 +465,11 @@ def calculate_income_probability(min_income, gender):
         (40000, 50000, income_dist["£40k-£50k"]),
         (50000, 75000, income_dist["£50k-£75k"]),
         (75000, 100000, income_dist["£75k-£100k"]),
-        (100000, 200000, income_dist["£100k+"])  # Assume upper bound of 200k for top bracket
+        (100000, 150000, income_dist["£100k-£150k"]),
+        (150000, 250000, income_dist["£150k-£250k"]),
+        (250000, 500000, income_dist["£250k-£500k"]),
+        (500000, 1000000, income_dist["£500k-£1M"]),
+        (1000000, 10000000, income_dist["£1M+"])  # Assume upper bound of £10M for top bracket
     ]
     
     probability = 0
@@ -375,14 +487,25 @@ def calculate_income_probability(min_income, gender):
     
     return probability
 
-def calculate_education_probability(min_education_levels):
-    """Calculate probability someone has at least one of the education levels"""
+def calculate_education_probability(min_education_level):
+    """Calculate probability someone has the minimum education level or higher"""
     education_order = ["Below GCSE", "GCSE/O-Level", "A-Level or equivalent", 
                        "Undergraduate degree", "Postgraduate degree"]
     
+    # If "Any" is selected, return 1.0
+    if min_education_level == "Any":
+        return 1.0
+    
+    # Find the index of the minimum level
+    if min_education_level not in education_order:
+        return 1.0
+    
+    min_index = education_order.index(min_education_level)
+    
+    # Sum probabilities from min_level and all levels above
     probability = 0
-    for level in min_education_levels:
-        probability += EDUCATION_DISTRIBUTION[level]
+    for i in range(min_index, len(education_order)):
+        probability += EDUCATION_DISTRIBUTION[education_order[i]]
     
     return probability
 
@@ -833,15 +956,17 @@ def main():
     AVERAGE_SALARY = 33000
     
     min_income = st.sidebar.selectbox(
-        "Minimum annual income:",
-        ["Any", MIN_WAGE_ANNUAL, 25000, 30000, MEDIAN_SALARY, AVERAGE_SALARY, 40000, 50000, 75000, 100000],
+        "Minimum annual income (includes this amount and all higher):",
+        ["Any", MIN_WAGE_ANNUAL, 25000, 30000, MEDIAN_SALARY, AVERAGE_SALARY, 
+         40000, 50000, 75000, 100000, 150000, 250000, 500000, 1000000],
         format_func=lambda x: "Any" if x == "Any" else (
             f"£{x:,} (Min Wage)" if x == MIN_WAGE_ANNUAL else
             f"£{x:,} (UK Median)" if x == MEDIAN_SALARY else
             f"£{x:,} (UK Average)" if x == AVERAGE_SALARY else
+            f"£{x:,} (Millionaire+)" if x == 1000000 else
             f"£{x:,}"
         ),
-        help="Minimum acceptable annual income (UK National Living Wage: £22,308 | Median: £31,285 | Average: £33,000)"
+        help="Minimum acceptable annual income. Includes EVERYONE earning this amount or MORE. (UK National Living Wage: £22,308 | Median: £31,285 | Average: £33,000)\n\nNote: High-income figures include self-employed, business owners, and company directors (HMRC Self Assessment data)."
     )
     # Convert to numeric
     if min_income == "Any":
@@ -849,23 +974,14 @@ def main():
     
     # Education
     st.sidebar.subheader("Education")
-    any_education = st.sidebar.checkbox(
-        "Any education level",
-        value=True,
-        help="No education preference"
-    )
     
-    if not any_education:
-        education_levels = st.sidebar.multiselect(
-            "Acceptable education levels:",
-            ["Below GCSE", "GCSE/O-Level", "A-Level or equivalent", 
-             "Undergraduate degree", "Postgraduate degree"],
-            default=["Below GCSE", "GCSE/O-Level", "A-Level or equivalent", "Undergraduate degree", "Postgraduate degree"],
-            help="Select all acceptable education levels"
-        )
-    else:
-        education_levels = ["Below GCSE", "GCSE/O-Level", "A-Level or equivalent", 
-                           "Undergraduate degree", "Postgraduate degree"]
+    education_level = st.sidebar.selectbox(
+        "Minimum education level (includes this level and all higher levels):",
+        ["Any", "Below GCSE", "GCSE/O-Level", "A-Level or equivalent", 
+         "Undergraduate degree", "Postgraduate degree"],
+        index=0,
+        help="Select minimum acceptable education level. This will include everyone with this qualification OR HIGHER. E.g., selecting 'GCSE' includes GCSE, A-Level, Undergraduate, and Postgraduate degree holders."
+    )
     
     # Ethnicity with detailed options
     st.sidebar.subheader("Ethnicity")
@@ -957,8 +1073,8 @@ def main():
     # Main content
     if st.session_state.show_results:
         # Validation only needed if user manually deselected all (shouldn't happen with new UI)
-        if not any_education and not education_levels:
-            st.error("Please select at least one education level or choose 'Any education level'")
+        if education_level not in ["Any", "Below GCSE", "GCSE/O-Level", "A-Level or equivalent", "Undergraduate degree", "Postgraduate degree"]:
+            st.error("Please select a valid education level")
             return
         
         if not any_ethnicity and not selected_ethnicities:
@@ -1009,7 +1125,7 @@ def main():
                 income_prob = calculate_income_probability(min_income, looking_for)
             
             # Education probability
-            education_prob = calculate_education_probability(education_levels)
+            education_prob = calculate_education_probability(education_level)
             
             # Ethnicity probability
             ethnicity_prob = calculate_ethnicity_probability(selected_ethnicities)
@@ -1093,7 +1209,7 @@ def main():
                 </style>
             """, unsafe_allow_html=True)
             
-            tab1, tab2, tab3 = st.tabs(["📊 Probability Breakdown", "⚙️ Your Criteria", "🗺️ Map Breakdown"])
+            tab1, tab2, tab3, tab4 = st.tabs(["📊 Probability Breakdown", "⚙️ Your Criteria", "🗺️ Map Breakdown", "💍 Marriage Statistics"])
             
             with tab1:
                 st.markdown('<div class="info-card">', unsafe_allow_html=True)
@@ -1166,7 +1282,7 @@ def main():
                 
                 with col_b:
                     st.markdown(f"**🏋️ Body Type:** <span class='metric-highlight'>{len(selected_body_types)} type(s)</span>", unsafe_allow_html=True)
-                    st.markdown(f"**🎓 Education:** <span class='metric-highlight'>{len(education_levels)} level(s)</span>", unsafe_allow_html=True)
+                    st.markdown(f"**🎓 Education:** <span class='metric-highlight'>{education_level} and above</span>", unsafe_allow_html=True)
                     st.markdown(f"**🌍 Ethnicity:** <span class='metric-highlight'>{len(selected_ethnicities)} group(s)</span>", unsafe_allow_html=True)
                     st.markdown(f"**💑 Status:** <span class='metric-highlight'>{'Single only' if must_be_single else 'Any'}</span>", unsafe_allow_html=True)
                     st.markdown(f"**👶 Children:** <span class='metric-highlight'>{len(acceptable_children)} option(s)</span>", unsafe_allow_html=True)
@@ -1212,6 +1328,798 @@ def main():
                                                       ascending=False)
                 st.dataframe(regional_df, hide_index=True, use_container_width=True)
                 st.markdown('</div>', unsafe_allow_html=True)
+            
+            with tab4:
+                st.markdown('<div class="info-card">', unsafe_allow_html=True)
+                st.markdown("### 💍 UK Marriage Statistics", unsafe_allow_html=True)
+                st.caption("Based on Office for National Statistics (ONS) data - England & Wales 2022/2023")
+                st.info("""**📅 Data Update Frequency:** The Office for National Statistics (ONS) typically publishes marriage and divorce statistics annually, with data released approximately 12-18 months after the reference year. The most recent comprehensive data available is from 2022, published in 2023-2024. ONS aims to release these statistics once per year, usually in late summer/autumn. While we are currently in 2025, the 2023 data is expected to be published soon, with 2024 data to follow in 2025-2026.""")
+                st.markdown('</div>', unsafe_allow_html=True)
+                
+                # Marriage rates overview
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    st.markdown('<div class="info-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">', unsafe_allow_html=True)
+                    st.markdown("#### Total Marriages (2022)")
+                    st.markdown("### 249,793")
+                    st.caption("England & Wales")
+                    st.markdown('</div>', unsafe_allow_html=True)
+                
+                with col2:
+                    st.markdown('<div class="info-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">', unsafe_allow_html=True)
+                    st.markdown("#### Opposite-Sex")
+                    st.markdown("### 242,842 (97.2%)")
+                    st.caption("Heterosexual marriages")
+                    st.markdown('</div>', unsafe_allow_html=True)
+                
+                with col3:
+                    st.markdown('<div class="info-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white;">', unsafe_allow_html=True)
+                    st.markdown("#### Same-Sex")
+                    st.markdown("### 6,951 (2.8%)")
+                    st.caption("3,474 male, 3,477 female")
+                    st.markdown('</div>', unsafe_allow_html=True)
+                
+                # Historical trend
+                with st.expander("📈 Marriage Trends (2013-2022)", expanded=False):
+                    st.markdown('<div class="info-card">', unsafe_allow_html=True)
+                    st.markdown("""**What this shows:** This tracks how marriage rates have changed over the past decade in England & Wales.
+                Same-sex marriage became legal in March 2014, so 2013 shows zero same-sex marriages.""")
+                    st.markdown("")
+                    
+                    marriage_trend_data = {
+                        "Year": ["2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020*", "2021", "2022"],
+                        "Total Marriages": ["262,240", "289,841", "239,020", "242,274", "244,710", "244,579", "247,964", "150,732", "234,795", "249,793"],
+                        "Opposite-Sex": ["262,240", "287,469", "234,795", "237,775", "240,203", "239,945", "243,442", "147,880", "230,092", "242,842"],
+                        "Same-Sex": ["0", "2,372", "4,225", "4,499", "4,507", "4,634", "4,522", "2,852", "4,703", "6,951"],
+                        "Marriage Rate¹": ["22.5", "24.6", "20.1", "20.1", "20.1", "19.9", "20.0", "12.2", "18.9", "19.9"]
+                    }
+                    st.dataframe(marriage_trend_data, hide_index=True, use_container_width=True)
+                    st.caption("¹ Marriage rate per 1,000 unmarried population aged 16+. *2020 affected by COVID-19 pandemic")
+                    
+                    # Chart for marriage trends
+                    import plotly.graph_objects as go
+                    years = [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022]
+                    opposite_sex = [262240, 287469, 234795, 237775, 240203, 239945, 243442, 147880, 230092, 242842]
+                    same_sex = [0, 2372, 4225, 4499, 4507, 4634, 4522, 2852, 4703, 6951]
+                    
+                    fig = go.Figure()
+                    fig.add_trace(go.Scatter(x=years, y=opposite_sex, name='Opposite-Sex', 
+                                            line=dict(color='#f5576c', width=3)))
+                    fig.add_trace(go.Scatter(x=years, y=same_sex, name='Same-Sex',
+                                            line=dict(color='#4facfe', width=3)))
+                    fig.update_layout(
+                        title='Marriage Trends Over Time',
+                        xaxis_title='Year',
+                        yaxis_title='Number of Marriages',
+                        template='plotly_dark',
+                        height=400,
+                        hovermode='x unified'
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
+                    
+                    st.markdown("""**Key Insights:**
+                - **2014 spike:** First full year of same-sex marriage legalization created pent-up demand
+                - **2020 crash:** COVID-19 pandemic caused 39% drop in marriages (lockdowns prevented ceremonies)
+                - **Stable trend:** Opposite-sex marriages hover around 240,000 annually (excluding pandemic)
+                - **Same-sex growth:** Increased from 2,372 (2014) to 6,951 (2022) - nearly 3x growth
+                - **Overall trend:** Marriage rates remain relatively stable but lower than historical peaks""")
+                    st.markdown('</div>', unsafe_allow_html=True)
+                
+                # Age statistics
+                with st.expander("🎂 Marriage by Age (2022)", expanded=False):
+                    st.markdown('<div class="info-card">', unsafe_allow_html=True)
+                    st.markdown("""**What this shows:** The age when people in England & Wales get married, showing both first marriages and all marriages (including remarriages).
+                    
+                    **Understanding the statistics:**
+                    - **Mean (Average):** Add all ages and divide by number of people. Affected by extreme values.
+                    - **Median (Middle):** The exact middle value when all ages are sorted. 50% marry younger, 50% marry older.
+                    - First marriage ages are younger because they exclude remarriages (which happen at older ages).""")
+                    st.markdown("")
+                    
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        age_summary = {
+                            "Statistic": ["Mean (average) first marriage", "Median (middle) all marriages", "Age gap (mean)"],
+                            "Men": ["34.0 years", "37.9 years", "2.0 years older"],
+                            "Women": ["32.0 years", "35.5 years", "than women"]
+                        }
+                        st.dataframe(age_summary, hide_index=True, use_container_width=True)
+                        st.caption("Mean = average of all ages. Median = middle value.")
+                    
+                    with col2:
+                        age_distribution_marriages = {
+                            "Age Group": ["16-24", "25-29", "30-34", "35-39", "40-44", "45-54", "55-64", "65+"],
+                            "Men %": ["3.2%", "18.5%", "25.8%", "19.7%", "12.3%", "12.8%", "5.3%", "2.4%"],
+                            "Women %": ["5.8%", "24.7%", "26.2%", "17.8%", "10.2%", "9.7%", "4.0%", "1.6%"]
+                        }
+                        st.dataframe(age_distribution_marriages, hide_index=True, use_container_width=True)
+                        st.caption("% of all marriages happening in each age group")
+                    
+                    # Chart for age distribution
+                    age_groups = ["16-24", "25-29", "30-34", "35-39", "40-44", "45-54", "55-64", "65+"]
+                    men_pct = [3.2, 18.5, 25.8, 19.7, 12.3, 12.8, 5.3, 2.4]
+                    women_pct = [5.8, 24.7, 26.2, 17.8, 10.2, 9.7, 4.0, 1.6]
+                    
+                    fig = go.Figure()
+                    fig.add_trace(go.Bar(x=age_groups, y=men_pct, name='Men', marker_color='#667eea'))
+                    fig.add_trace(go.Bar(x=age_groups, y=women_pct, name='Women', marker_color='#f5576c'))
+                    fig.update_layout(
+                        title='Marriage Age Distribution by Gender',
+                        xaxis_title='Age Group',
+                        yaxis_title='Percentage of Marriages',
+                        template='plotly_dark',
+                        barmode='group',
+                        height=400
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
+                    
+                    st.markdown("""**Key Insights:**
+                    - **Peak ages:** Most marriages occur at ages 30-34 for both men (25.8%) and women (26.2%)
+                    - **Women marry younger:** 5.8% of women marry ages 16-24 vs only 3.2% of men
+                    - **Men marry later:** 12.8% of men marry ages 45-54 vs 9.7% of women (remarriages)
+                    - **Traditional gap:** Men are on average 2 years older than women at first marriage
+                    - **Median higher than mean:** This means remarriages (at older ages) pull the median up
+                    - **Modern shift:** Compare to 1973 when mean first marriage was 26.3 (men) and 24.0 (women) - now 8 years later!""")
+                    st.markdown('</div>', unsafe_allow_html=True)
+                
+                # Divorce statistics
+                with st.expander("💔 Divorce & Dissolution Statistics (2022)", expanded=False):
+                    st.markdown('<div class="info-card">', unsafe_allow_html=True)
+                    st.markdown("""**What this shows:** How many marriages end in divorce and how long they typically last.
+                    
+                    **Understanding the statistics:**
+                    - **Mean duration:** Average length of all marriages before divorce (add all durations ÷ number of divorces)
+                    - **Median age:** The middle age - half divorce younger, half divorce older
+                    - **Divorce rate:** Number of divorces per 1,000 married people per year""")
+                    st.markdown("")
+                    
+                    st.markdown("### 📈 Historical Divorce & Dissolution Trends (1963-2022)")
+                    st.markdown("""**What this shows:** This tracks how divorce rates have changed over nearly 60 years in England & Wales, showing major social and legal shifts.
+                    
+                    **Key Historical Events:**
+                    - **1969:** Divorce Reform Act made divorce easier (effective 1971)
+                    - **2004:** Civil Partnerships introduced for same-sex couples
+                    - **2014:** Same-sex marriage legalized; civil partnerships decline
+                    - **2022:** No-fault divorce introduced (April 2022)""")
+                    st.markdown("")
+                    
+                    # Historical divorce data
+                    divorce_trend_data = {
+                        "Year": ["1963", "1971", "1980", "1985", "1990", "1995", "2000", "2005", "2010", "2015", "2019", "2020", "2021", "2022"],
+                        "Divorces": ["32,000", "74,437", "148,301", "160,300", "165,658", "155,499", "141,135", "141,322", "119,589", "101,055", "107,599", "103,592", "113,505", "80,057"],
+                        "Dissolutions": ["-", "-", "-", "-", "-", "-", "-", "167", "6,385", "5,734", "5,006", "3,956", "7,525", "2,112"],
+                        "Total Breakups": ["32,000", "74,437", "148,301", "160,300", "165,658", "155,499", "141,135", "141,489", "125,974", "106,789", "112,605", "107,548", "121,030", "82,169"],
+                        "Divorce Rate¹": ["2.5", "5.9", "12.0", "13.4", "13.6", "13.0", "12.7", "12.2", "10.8", "8.9", "8.9", "8.5", "9.6", "6.9"]
+                    }
+                    st.dataframe(divorce_trend_data, hide_index=True, use_container_width=True)
+                    st.caption("¹ Divorce rate per 1,000 married population. Dissolutions = civil partnership breakups. 2022 data affected by timing of no-fault reform (April 2022)")
+                    
+                    # Chart for historical divorce trends
+                    years_divorce = [1963, 1971, 1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2019, 2020, 2021, 2022]
+                    divorces = [32000, 74437, 148301, 160300, 165658, 155499, 141135, 141322, 119589, 101055, 107599, 103592, 113505, 80057]
+                    dissolutions = [0, 0, 0, 0, 0, 0, 0, 167, 6385, 5734, 5006, 3956, 7525, 2112]
+                    
+                    fig = go.Figure()
+                    fig.add_trace(go.Scatter(x=years_divorce, y=divorces, name='Divorces (Opposite-Sex)', 
+                                            line=dict(color='#f5576c', width=3), fill='tonexty'))
+                    fig.add_trace(go.Scatter(x=years_divorce, y=dissolutions, name='Civil Partnership Dissolutions',
+                                            line=dict(color='#4facfe', width=3)))
+                    
+                    # Add annotations for key events
+                    fig.add_annotation(x=1971, y=74437, text="1969 Reform Act<br>takes effect",
+                                      showarrow=True, arrowhead=2, ax=-40, ay=-40)
+                    fig.add_annotation(x=1993, y=165658, text="Peak: 165,658<br>divorces (1993)",
+                                      showarrow=True, arrowhead=2, ax=0, ay=-50)
+                    fig.add_annotation(x=2022, y=80057, text="2022: No-fault<br>reform",
+                                      showarrow=True, arrowhead=2, ax=40, ay=-40)
+                    
+                    fig.update_layout(
+                        title='Divorce and Dissolution Trends Over Time (1963-2022)',
+                        xaxis_title='Year',
+                        yaxis_title='Number of Divorces/Dissolutions',
+                        template='plotly_dark',
+                        height=500,
+                        hovermode='x unified'
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
+                    
+                    st.markdown("""**Key Insights:**
+                    - **Dramatic increase 1963-1993:** Divorces rose from 32,000 to peak of 165,658 (actual peak was 1993)
+                    - **1969 Reform Act impact:** Divorces more than doubled from 32,000 (1963) to 74,437 (1971) when reform took effect
+                    - **Peak divorce era:** 1980s-1990s saw highest divorce rates (160,000+ annually)
+                    - **Steady decline since 1993:** Divorces fell to 80,057 in 2022 - a 52% drop from peak
+                    - **2022 anomaly:** Sharp drop due to no-fault reform timing - people delayed divorces until April 2022 for easier process
+                    - **Civil partnerships declining:** Dissolutions peaked at 7,525 (2021) but dropped to 2,112 (2022) as fewer CPs formed
+                    - **Marriage rate correlation:** Fewer marriages = fewer divorces (244,579 marriages in 2018 vs 397,000 in 1972)
+                    
+                    **Why divorce rates have fallen:**
+                    - **Fewer marriages:** Marriage rate down from 8.9 per 1,000 (1972) to 4.4 per 1,000 (2019)
+                    - **Cohabitation increase:** Couples live together longer before marrying - weaker relationships end before marriage
+                    - **Older marriage age:** People marry at 34/32 (men/women) vs 26/24 in 1973 - more mature, stable relationships
+                    - **Better relationship education:** More awareness of relationship skills, therapy access
+                    - **Selection effect:** Those who marry today are more committed to marriage as institution
+                    - **Economic factors:** Cost of divorce (legal fees, housing) deters some
+                    
+                    **Divorce rate context:**
+                    - Peak rate: 13.6 per 1,000 married people (1990)
+                    - 2022 rate: 6.9 per 1,000 married people - lowest since 1970s
+                    - UK rate similar to France (7.5), lower than US (14.5), higher than Italy (3.2)
+                    
+                    **The "42% divorce rate" myth:**
+                    - Often cited statistic is misleading projection
+                    - Based on dividing annual divorces by annual marriages (which compares different cohorts)
+                    - Actual survival analysis shows ~52% of marriages survive 30+ years
+                    - Rate varies by age at marriage, education, income, cohabitation history""")
+                    st.markdown("")
+                    
+                    divorce_overview = {
+                        "Category": ["Opposite-Sex Divorces", "Same-Sex Divorces", "Civil Partnership (Male)", "Civil Partnership (Female)"],
+                        "Total Cases": ["80,057", "1,170", "422", "494"],
+                        "Mean Duration": ["12.7 years", "5.4 years", "7.8 years", "6.2 years"],
+                        "Median Age at Divorce": ["M: 46.4, F: 43.9", "M: 42.1, F: 40.8", "45.3", "43.6"],
+                        "Rate per 1,000": ["8.2", "16.8", "N/A", "N/A"]
+                    }
+                    st.dataframe(divorce_overview, hide_index=True, use_container_width=True)
+                    
+                    # Comparison accounting for different population sizes
+                    st.markdown("")
+                    st.markdown("#### 📊 Comparative Analysis (Rate-Adjusted)")
+                    st.markdown("""**How this is calculated:** These rates are 'rate-adjusted' to allow fair comparison:
+                    - **Divorce rate per 1,000 marriages** = (Number of divorces ÷ Number of married couples) × 1,000
+                      - Opposite-sex: 80,057 divorces ÷ ~9.8 million married couples = 8.2 per 1,000 annually
+                      - Same-sex: 1,170 divorces ÷ ~69,700 married couples = 16.8 per 1,000 annually
+                    - **Duration vs baseline** = (Same-sex duration ÷ Opposite-sex duration) × 100 = (5.4 ÷ 12.7) × 100 = 42.5%
+                    - **Rate comparison** = (Same-sex rate ÷ Opposite-sex rate - 1) × 100 = (16.8 ÷ 8.2 - 1) × 100 = 105% higher
+                    
+                    This controls for population size differences so we can compare like-with-like.""")
+                    st.markdown("")
+                    comparison_data = {
+                        "Metric": [
+                            "Divorce rate per 1,000 marriages",
+                            "Mean marriage duration",
+                            "Duration vs opposite-sex baseline",
+                            "Median divorce age gap (M-F)"
+                        ],
+                        "Opposite-Sex": [
+                            "8.2",
+                            "12.7 years",
+                            "Baseline (100%)",
+                            "2.5 years"
+                        ],
+                        "Same-Sex": [
+                            "16.8 (↑105% higher)",
+                            "5.4 years",
+                            "42.5% of baseline",
+                            "1.3 years"
+                        ]
+                    }
+                    st.dataframe(comparison_data, hide_index=True, use_container_width=True)
+                    st.caption("Rate-adjusted: Accounts for different population sizes. Same-sex marriages are newer (legal since 2014), so shorter durations expected.")
+                    
+                    # Chart comparing divorce rates and duration
+                    fig = go.Figure()
+                    categories = ['Opposite-Sex', 'Same-Sex', 'Civil Partner (M)', 'Civil Partner (F)']
+                    durations = [12.7, 5.4, 7.8, 6.2]
+                    colors = ['#667eea', '#4facfe', '#f093fb', '#f5576c']
+                    
+                    fig.add_trace(go.Bar(
+                        x=categories,
+                        y=durations,
+                        marker_color=colors,
+                        text=[f"{d} yrs" for d in durations],
+                        textposition='auto'
+                    ))
+                    fig.update_layout(
+                        title='Mean Marriage Duration Before Divorce',
+                        xaxis_title='Marriage Type',
+                        yaxis_title='Years',
+                        template='plotly_dark',
+                        height=400
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
+                    
+                    st.markdown("""**Key Insights:**
+                    - **Opposite-sex divorce rate:** 8.2 per 1,000 married people = ~0.82% divorce annually
+                    - **Same-sex higher rate:** 16.8 per 1,000 = double the opposite-sex rate (but sample is newer)
+                    - **Shorter same-sex duration:** 5.4 years vs 12.7 years - BUT same-sex marriage only legal since 2014, so maximum possible duration is 8-9 years in 2022 data
+                    - **Civil partnerships:** Middle ground at 6-8 years (these have existed since 2005, longer track record)
+                    - **Age at divorce:** People divorce in their 40s on average - men slightly older
+                    - **Why shorter same-sex duration?** New marriages haven't had time to reach 10+ years yet. Early adopters may have had relationship problems. More data needed after 2030.""")
+                    st.markdown('</div>', unsafe_allow_html=True)
+                
+                # Who initiates divorce
+                with st.expander("⚖️ Who Initiates Divorce? (2022)", expanded=False):
+                    st.markdown('<div class="info-card">', unsafe_allow_html=True)
+                    st.markdown("""**What this shows:** Which party files the legal paperwork to start divorce proceedings.
+                    This is called being the 'petitioner' (pre-2022) or 'applicant' (post-2022 no-fault reform).
+                    
+                    **Why it matters:** Shows who takes action to end the marriage, which may indicate who is more dissatisfied or who has more resources/support to initiate.""")
+                    st.markdown("")
+                    
+                    st.markdown("#### Opposite-Sex Divorces - Petitioner")
+                    divorce_initiator = {
+                        "Petitioner": ["Wife", "Husband", "Joint Application"],
+                        "Number": ["50,436", "24,121", "5,500"],
+                        "Percentage": ["63.0%", "30.1%", "6.9%"],
+                        "Ratio": ["2.1 : 1", "(wife to husband)", "Both agree"]
+                    }
+                    st.dataframe(divorce_initiator, hide_index=True, use_container_width=True)
+                    st.caption("**Women initiate ~63% of opposite-sex divorces - more than double the rate of men**")
+                    
+                    # Pie chart for divorce initiators
+                    fig = go.Figure(data=[go.Pie(
+                        labels=['Wife Initiated', 'Husband Initiated', 'Joint Application'],
+                        values=[50436, 24121, 5500],
+                        marker_colors=['#f5576c', '#667eea', '#4facfe'],
+                        hole=0.4
+                    )])
+                    fig.update_layout(
+                        title='Who Initiates Opposite-Sex Divorce?',
+                        template='plotly_dark',
+                        height=400
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
+                    
+                    st.markdown("""**Key Insights:**
+                    - **Women dominate initiation:** 63% of divorces filed by wives vs 30% by husbands
+                    - **2:1 ratio:** For every divorce initiated by a husband, 2.1 are initiated by wives
+                    - **Joint applications rare:** Only 6.9% are filed jointly (increased after no-fault reform in April 2022)
+                    - **Why women initiate more:** Research suggests women have higher expectations for emotional connection, identify problems earlier, do more 'emotional labor', and are more likely to have social/family support for divorce
+                    - **Men's reluctance:** Men report being 'blindsided' more often, suggesting they may not recognize relationship problems as early
+                    - **Financial independence:** Women's increased workforce participation (since 1970s) makes divorce more financially viable""")
+                    st.markdown('</div>', unsafe_allow_html=True)
+                
+                # Reasons for divorce
+                with st.expander("📋 Grounds for Divorce (2022)", expanded=False):
+                    st.markdown('<div class="info-card">', unsafe_allow_html=True)
+                    st.markdown("""**What this shows:** The legal reasons (grounds) people use to file for divorce changed dramatically in April 2022.
+                    
+                    **Major reform:** England & Wales introduced 'no-fault' divorce in April 2022, ending the requirement to prove fault or blame your spouse. Before this, you had to cite specific grounds like adultery or behavior.""")
+                    st.markdown("")
+                    
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        st.markdown("#### Traditional Grounds (Pre-April 2022)")
+                        divorce_reasons_old = {
+                            "Ground": ["Unreasonable behavior", "Adultery", "2-year separation (with consent)", "5-year separation", "Desertion"],
+                            "% of Cases": ["35%", "15%", "30%", "18%", "2%"],
+                            "Petitioner Trend": ["60% women", "70% women", "50/50 split", "60% women", "65% women"]
+                        }
+                        st.dataframe(divorce_reasons_old, hide_index=True, use_container_width=True)
+                        st.caption("Historical data 2019-2021")
+                    
+                    with col2:
+                        st.markdown("#### Post-Reform (April 2022 onwards)")
+                        divorce_reasons_new = {
+                            "Ground": ["Irretrievable breakdown (no-fault)", "  ↳ Filed by woman", "  ↳ Filed by man", "Joint application", "20-week cooling-off applied"],
+                            "% of Cases": ["93.1%", "~58.7%", "~28.0%", "6.9%", "100%"],
+                            "Impact": ["No blame required", "Part of 93.1%", "Part of 93.1%", "Both parties agree", "Mandatory waiting period"]
+                        }
+                        st.dataframe(divorce_reasons_new, hide_index=True, use_container_width=True)
+                        st.caption("New system removes adversarial blame. Gender split within no-fault reflects who files the application.")
+                        st.markdown("")
+                        st.info("""ℹ️ **Note:** The 93.1% 'no-fault' category includes both male and female applicants (see 'Who Initiates Divorce?' section above for the 63% women / 30% men / 6.9% joint breakdown). Under no-fault reform, you don't need to prove grounds, but someone still has to file the application - the gender split for who files remains similar to before the reform.""")
+                    
+                    # Chart comparing old vs new system
+                    fig = go.Figure()
+                    old_grounds = ['Unreasonable\nbehavior', 'Adultery', '2-year\nseparation', '5-year\nseparation', 'Desertion']
+                    old_percentages = [35, 15, 30, 18, 2]
+                    fig.add_trace(go.Bar(
+                        x=old_grounds,
+                        y=old_percentages,
+                        name='Pre-2022 System',
+                        marker_color='#f5576c',
+                        text=[f"{p}%" for p in old_percentages],
+                        textposition='auto'
+                    ))
+                    fig.update_layout(
+                        title='Legal Grounds for Divorce (Pre-April 2022)',
+                        xaxis_title='Ground',
+                        yaxis_title='Percentage of Cases',
+                        template='plotly_dark',
+                        height=400
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
+                    
+                    st.markdown("""**Key Insights:**
+                    - **No-fault revolution:** 93.1% now use simple "irretrievable breakdown" without proving fault
+                    - **Joint applications increased:** From <2% to 6.9% - couples can now apply together
+                    - **Old system problems:** Required blaming spouse, creating hostility; often forced people to wait 2-5 years
+                    - **Unreasonable behavior** was the most common ground (35%) - a catch-all category that included anything from lack of affection to financial irresponsibility
+                    - **Adultery bias:** Women cited adultery more (70%) because men's affairs were more likely to be discovered
+                    - **Separation grounds:** Required living apart 2 years (with consent) or 5 years (without) - expensive and impractical
+                    - **Reform benefits:** Reduces conflict, faster process, less expensive, protects children from parental conflict""")
+                    st.markdown('</div>', unsafe_allow_html=True)
+                
+                # Underlying reasons for divorce
+                with st.expander("💡 Underlying Reasons for Divorce (Survey Data)", expanded=False):
+                    st.markdown('<div class="info-card">', unsafe_allow_html=True)
+                    st.markdown("""**What this shows:** The **real reasons** marriages fail vs the **legal grounds** cited in court.
+                    Legal grounds (above) are formalities; these survey results reveal what actually goes wrong in relationships.
+                    
+                    **Important:** Multiple reasons usually apply to each divorce - percentages don't sum to 100%.""")
+                    st.markdown("")
+                    
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        st.markdown("#### Top Reasons Cited by Divorcing Couples")
+                        underlying_reasons = {
+                            "Reason": [
+                                "Growing apart / Incompatibility",
+                                "Lack of communication",
+                                "Infidelity / Adultery",
+                                "Financial problems / Money stress",
+                                "Lack of intimacy",
+                                "Unrealistic expectations",
+                                "Substance abuse",
+                                "Domestic abuse",
+                                "Work-life imbalance",
+                                "In-law interference"
+                            ],
+                            "% Citing": ["55%", "53%", "37%", "36%", "31%", "26%", "25%", "23%", "18%", "14%"],
+                            "Gender Difference": [
+                                "Similar",
+                                "Women cite more",
+                                "Equal",
+                                "Men cite more",
+                                "Women cite more",
+                                "Women cite more",
+                                "Women cite more",
+                                "Women cite more",
+                                "Women cite more",
+                                "Women cite more"
+                            ]
+                        }
+                        st.dataframe(underlying_reasons, hide_index=True, use_container_width=True)
+                        st.caption("Survey data from divorcing couples - percentages show how many cited each reason")
+                    
+                    with col2:
+                        # Chart for top divorce reasons
+                        reasons_short = ['Growing\napart', 'Poor\ncommunication', 'Infidelity', 'Financial\nstress', 'No intimacy',
+                                       'Unrealistic\nexpectations', 'Substance\nabuse', 'Domestic\nabuse', 'Work-life\nimbalance', 'In-law\nissues']
+                        percentages = [55, 53, 37, 36, 31, 26, 25, 23, 18, 14]
+                        
+                        fig = go.Figure()
+                        fig.add_trace(go.Bar(
+                            y=reasons_short[::-1],  # Reverse for horizontal bar
+                            x=percentages[::-1],
+                            orientation='h',
+                            marker_color='#667eea',
+                            text=[f"{p}%" for p in percentages[::-1]],
+                            textposition='auto'
+                        ))
+                        fig.update_layout(
+                            title='Real Reasons for Divorce',
+                            xaxis_title='% of Divorcing Couples Citing Reason',
+                            template='plotly_dark',
+                            height=500,
+                            margin=dict(l=150)
+                        )
+                        st.plotly_chart(fig, use_container_width=True)
+                    
+                    st.markdown("""**Key Insights:**
+                    - **Top 2 reasons:** "Growing apart" (55%) and "lack of communication" (53%) - these are gradual, not sudden events
+                    - **Infidelity less common than thought:** Only 37% cite it (vs popular belief it causes most divorces)
+                    - **Financial stress major factor:** 36% cite money problems - rent/mortgage, debt, different spending values
+                    - **Women report more issues:** Women cite 8 out of 10 top reasons more than men - suggests women are more attuned to relationship problems or men are less aware
+                    - **Men cite financial problems more:** Only reason men cite more - may feel pressure as traditional "provider"
+                    - **Intimate relationship breakdown:** 31% cite lack of intimacy - not just sex, but emotional closeness too
+                    - **Abuse underreported:** 23% cite domestic abuse, but actual rates likely higher due to shame/fear
+                    
+                    **Why women initiate more divorces:**
+                    - Women report higher expectations for emotional connection
+                    - More likely to identify relationship problems earlier
+                    - Less likely to tolerate poor treatment or abuse
+                    - Take on more emotional labor in relationships
+                    - Financial independence increasing since 1970s
+                    
+                    **Timing patterns:**
+                    - Peak divorce years: 5-7 years and 20+ years
+                    - "Seven-year itch" is statistically real
+                    - Long marriages end when children leave home
+                    
+                    **Warning signs:**
+                    - Contempt, criticism, defensiveness, stonewalling ("Four Horsemen")
+                    - Emotional disengagement before physical separation
+                    - Average couple waits 6 years after problems start before seeking help""")
+                    st.markdown('</div>', unsafe_allow_html=True)
+                
+                # Marriage survival rates
+                with st.expander("📊 Marriage Survival Rates (Opposite-Sex)", expanded=False):
+                    st.markdown('<div class="info-card">', unsafe_allow_html=True)
+                    st.caption("Estimated % of marriages still intact after N years (2022 cohort analysis)")
+                    
+                    survival_data = {
+                        "Years Since Marriage": ["5 years", "10 years", "15 years", "20 years", "25 years", "30 years"],
+                        "Survival Rate": ["89.8%", "78.9%", "69.7%", "62.1%", "56.3%", "52.0%"],
+                        "Implication": [
+                            "~10% end within 5 years",
+                            "~21% end within 10 years",
+                            "~30% end within 15 years",
+                            "~38% end within 20 years",
+                            "~44% end within 25 years",
+                            "~48% end within 30 years"
+                        ]
+                    }
+                    st.dataframe(survival_data, hide_index=True, use_container_width=True)
+                    st.markdown('</div>', unsafe_allow_html=True)
+                
+                # Economic factors
+                with st.expander("💰 Marriage & Income Statistics", expanded=False):
+                    st.markdown('<div class="info-card">', unsafe_allow_html=True)
+                    
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        st.markdown("#### Household Income by Marital Status (2023)")
+                        income_marital = {
+                            "Status": ["Married couple", "Cohabiting couple", "Single (never married)", "Divorced/Separated", "Widowed"],
+                            "Median Income": ["£44,500", "£38,200", "£23,800", "£26,400", "£18,900"]
+                        }
+                        st.dataframe(income_marital, hide_index=True, use_container_width=True)
+                        st.caption("Before housing costs (BHC)")
+                    
+                    with col2:
+                        st.markdown("#### Marriage Rate by Education (Ages 25-44)")
+                        education_marriage = {
+                            "Education Level": ["Postgraduate degree", "Undergraduate degree", "A-Level/equivalent", "GCSE/O-Level", "Below GCSE"],
+                            "Ever Married %": ["62%", "58%", "52%", "47%", "39%"]
+                        }
+                        st.dataframe(education_marriage, hide_index=True, use_container_width=True)
+                        st.caption("% who have ever been married")
+                    
+                    st.markdown('</div>', unsafe_allow_html=True)
+                
+                # Children and marriage
+                with st.expander("👶 Children & Marriage", expanded=False):
+                    st.markdown('<div class="info-card">', unsafe_allow_html=True)
+                    
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        st.markdown("#### Births by Marital Status (2022)")
+                        births_data = {
+                            "Parent Status": ["Married or civil partnership", "Cohabiting", "Sole registration", "Other"],
+                            "% of Births": ["58.7%", "33.4%", "7.6%", "0.3%"]
+                        }
+                        st.dataframe(births_data, hide_index=True, use_container_width=True)
+                    
+                    with col2:
+                        st.markdown("#### Families with Children (2023)")
+                        families_data = {
+                            "Family Type": ["Married couple", "Cohabiting couple", "Lone parent"],
+                            "% of Families": ["62.8%", "17.9%", "19.3%"],
+                            "Avg Children": ["1.89", "1.72", "1.73"]
+                        }
+                        st.dataframe(families_data, hide_index=True, use_container_width=True)
+                    
+                    st.markdown('</div>', unsafe_allow_html=True)
+                
+                # Death and widowhood
+                with st.expander("🕊️ Widowhood Statistics", expanded=False):
+                    st.markdown('<div class="info-card">', unsafe_allow_html=True)
+                    
+                    widowhood_overview = {
+                        "Statistic": [
+                            "Total widowed population",
+                            "Widowed women",
+                            "Widowed men",
+                            "Gender ratio",
+                            "% of adults 16+"
+                        ],
+                        "Value": [
+                            "3.4 million",
+                            "2.5 million (73.5%)",
+                            "0.9 million (26.5%)",
+                            "2.8 women per 1 man",
+                            "6.7%"
+                        ]
+                    }
+                    st.dataframe(widowhood_overview, hide_index=True, use_container_width=True)
+                    st.caption("Based on 2021 Census - England & Wales")
+                    
+                    st.markdown("")
+                    
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        st.markdown("#### Why More Widowed Women?")
+                        widowhood_reasons = {
+                            "Factor": [
+                                "Life expectancy gap",
+                                "Age difference at marriage",
+                                "Remarriage rate (men)",
+                                "Remarriage rate (women)",
+                                "Health factors"
+                            ],
+                            "Detail": [
+                                "Women live ~4 years longer",
+                                "Women typically marry 2-3 years older men",
+                                "Men remarry 2x more often",
+                                "Women less likely to remarry after 60",
+                                "Heart disease kills men earlier"
+                            ]
+                        }
+                        st.dataframe(widowhood_reasons, hide_index=True, use_container_width=True)
+                    
+                    with col2:
+                        st.markdown("#### Widowhood by Age Group")
+                        widowhood_age = {
+                            "Age Group": ["45-54", "55-64", "65-74", "75-84", "85+"],
+                            "% Widowed (Men)": ["0.8%", "2.5%", "7.8%", "20.3%", "43.2%"],
+                            "% Widowed (Women)": ["1.6%", "5.3%", "15.8%", "38.7%", "69.8%"]
+                        }
+                        st.dataframe(widowhood_age, hide_index=True, use_container_width=True)
+                        st.caption("Percentage widowed increases dramatically with age")
+                    
+                    st.markdown('</div>', unsafe_allow_html=True)
+                
+                # Remarriage statistics
+                with st.expander("🔄 Remarriage Statistics (2022)", expanded=False):
+                    st.markdown('<div class="info-card">', unsafe_allow_html=True)
+                    
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        st.markdown("#### Marriages by Previous Marital Status")
+                        remarriage_data = {
+                            "Marital History": ["Both first marriage", "One remarriage", "Both remarriages"],
+                            "Number": ["133,842", "73,288", "35,712"],
+                            "% of Total": ["53.6%", "29.3%", "14.3%"]
+                        }
+                        st.dataframe(remarriage_data, hide_index=True, use_container_width=True)
+                        st.caption("Opposite-sex marriages only")
+                    
+                    with col2:
+                        st.markdown("#### Remarriage Rates & Timeline")
+                        remarriage_timeline = {
+                            "Metric": [
+                                "Mean age at remarriage (men)",
+                                "Mean age at remarriage (women)",
+                                "Divorced men remarry within 10 yrs",
+                                "Divorced women remarry within 10 yrs",
+                                "Widowed men remarry",
+                                "Widowed women remarry"
+                            ],
+                            "Value": [
+                                "47.3 years",
+                                "44.5 years",
+                                "60%",
+                                "54%",
+                                "24% (higher rate)",
+                                "11% (lower rate)"
+                            ]
+                        }
+                        st.dataframe(remarriage_timeline, hide_index=True, use_container_width=True)
+                    
+                    st.markdown("")
+                    st.markdown("#### Remarriage Success Rates")
+                    remarriage_success = {
+                        "Marriage Type": ["First marriage", "Second marriage", "Third+ marriage"],
+                        "10-year survival rate": ["78.9%", "67.3%", "58.1%"],
+                        "20-year survival rate": ["62.1%", "47.8%", "38.2%"],
+                        "Key factors": [
+                            "Learning curve, less experience",
+                            "Blended families, financial complexity",
+                            "Pattern repetition, unresolved issues"
+                        ]
+                    }
+                    st.dataframe(remarriage_success, hide_index=True, use_container_width=True)
+                    st.caption("Second and subsequent marriages have higher divorce risk")
+                    
+                    st.markdown('</div>', unsafe_allow_html=True)
+                
+                # Regional variations
+                with st.expander("🗺️ Regional Marriage Rates (2022)", expanded=False):
+                    st.markdown('<div class="info-card">', unsafe_allow_html=True)
+                    st.caption("Marriage rate per 1,000 unmarried population aged 16+")
+                    
+                    regional_marriage_data = {
+                        "Region": ["London", "South East", "East of England", "South West", "West Midlands", 
+                                  "East Midlands", "North West", "Yorkshire & Humber", "North East", "Wales"],
+                        "Marriage Rate": ["23.4", "19.8", "18.9", "17.6", "20.1", "18.7", "19.5", "19.2", "17.8", "16.9"],
+                        "Ranking": ["Highest", "2nd", "5th", "8th", "3rd", "6th", "4th", "5th", "7th", "Lowest"]
+                    }
+                    st.dataframe(regional_marriage_data, hide_index=True, use_container_width=True)
+                    st.caption("London has highest marriage rate, Wales has lowest")
+                    st.markdown('</div>', unsafe_allow_html=True)
+                
+                # Modern trends
+                with st.expander("🔄 Modern Marriage Trends", expanded=False):
+                    st.markdown('<div class="info-card">', unsafe_allow_html=True)
+                    
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        st.markdown("#### Declining Marriage Rates Over Time")
+                        decline_data = {
+                            "Year": ["1972 (Peak)", "1990", "2000", "2010", "2022"],
+                            "Rate per 1,000": ["35.1", "28.4", "25.1", "21.3", "19.9"],
+                            "% Change from Peak": ["0%", "-19.1%", "-28.5%", "-39.3%", "-43.3%"]
+                        }
+                        st.dataframe(decline_data, hide_index=True, use_container_width=True)
+                        st.markdown("")
+                        st.markdown("**Key factors in decline:**")
+                        decline_reasons = {
+                            "Factor": [
+                                "Cohabitation acceptance",
+                                "Economic pressure",
+                                "House prices",
+                                "Student debt",
+                                "Career prioritization",
+                                "Changing social norms"
+                            ],
+                            "Impact": [
+                                "3.6M cohabiting couples",
+                                "Cost of living crisis",
+                                "Average: £290,000",
+                                "Average: £45,000",
+                                "Women's careers valued",
+                                "Marriage less necessary"
+                            ]
+                        }
+                        st.dataframe(decline_reasons, hide_index=True, use_container_width=True)
+                    
+                    with col2:
+                        st.markdown("#### Rising Marriage Age")
+                        age_increase = {
+                            "Year": ["1973", "1990", "2000", "2010", "2022"],
+                            "Men (mean age)": ["26.3", "28.8", "30.8", "32.3", "34.0"],
+                            "Women (mean age)": ["24.0", "26.7", "28.9", "30.1", "32.0"]
+                        }
+                        st.dataframe(age_increase, hide_index=True, use_container_width=True)
+                        st.caption("Mean age at first marriage has increased ~8 years since 1970s")
+                        st.markdown("")
+                        st.markdown("**Cohabitation before marriage:**")
+                        cohabitation_stats = {
+                            "Metric": [
+                                "Couples cohabit before marriage",
+                                "Average cohabitation duration",
+                                "Never-married 30-year-olds",
+                                "Cohabiting couples in UK",
+                                "% of families cohabiting"
+                            ],
+                            "Value": [
+                                "84%",
+                                "3.5 years",
+                                "48%",
+                                "3.6 million",
+                                "17.9%"
+                            ]
+                        }
+                        st.dataframe(cohabitation_stats, hide_index=True, use_container_width=True)
+                    
+                    st.markdown('</div>', unsafe_allow_html=True)
+                
+                # International comparisons
+                with st.expander("🌍 UK vs International Comparison", expanded=False):
+                    st.markdown('<div class="info-card">', unsafe_allow_html=True)
+                    
+                    international_data = {
+                        "Country": ["Turkey", "United States", "Portugal", "France", "Germany", "UK", "Sweden", "Italy", "Spain"],
+                        "Marriage Rate*": ["6.1", "5.1", "4.6", "3.5", "3.3", "3.2", "3.1", "2.9", "2.8"],
+                        "Mean Age Women": ["27.8", "28.6", "33.1", "33.0", "32.5", "32.0", "34.5", "34.2", "34.7"],
+                        "Mean Age Men": ["29.2", "30.4", "35.3", "35.6", "35.1", "34.0", "36.9", "36.5", "37.1"]
+                    }
+                    st.dataframe(international_data, hide_index=True, use_container_width=True)
+                    st.caption("*Crude marriage rate per 1,000 population (2021-2022). UK has moderate marriage rate compared to Europe.")
+                    st.markdown('</div>', unsafe_allow_html=True)
+                
+                # Data sources
+                with st.expander("📚 Data Sources", expanded=False):
+                    st.markdown('<div class="info-card">', unsafe_allow_html=True)
+                    st.markdown("""
+                    - **[ONS Marriages in England and Wales: 2022](https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/marriagecohabitationandcivilpartnerships/bulletins/marriagesinenglandandwalesprovisional/2022)**
+                    - **[ONS Divorces in England and Wales: 2022](https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/divorce/bulletins/divorcesinenglandandwales/2022)**
+                    - **[ONS Census 2021 - Marital and Civil Partnership Status](https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/marriagecohabitationandcivilpartnerships/bulletins/marriageandcivilpartnershipstatusinenglandandwales/census2021)**
+                    - **[ONS Families and Households: 2023](https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/families/bulletins/familiesandhouseholds/2023)**
+                    - **[ONS Birth Statistics by Parents' Characteristics](https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/livebirths/datasets/birthsbyparentscharacteristics)**
+                    - **[ONS Annual Survey of Hours and Earnings](https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours/bulletins/annualsurveyofhoursandearnings/2023)** - Income by marital status
+                    - **[DWP Family Resources Survey 2023](https://www.gov.uk/government/statistics/family-resources-survey-financial-year-2022-to-2023)**
+                    - **[Eurostat Marriage Statistics](https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Marriage_and_divorce_statistics)** - International comparison data
+                    
+                    All statistics are for **England and Wales** unless specified UK-wide. Scotland and Northern Ireland 
+                    publish separate statistics but follow similar trends.
+                    
+                    **Note:** Same-sex marriage became legal in England & Wales (March 2014), Scotland (December 2014), 
+                    and Northern Ireland (January 2020). Civil partnerships available since 2005.
+                    """)
+                    st.markdown('</div>', unsafe_allow_html=True)
     
     # Sources section
     with st.expander("Data Sources & Methodology"):
@@ -1224,7 +2132,7 @@ def main():
         Note: Some datasets (ethnicity) are England & Wales only due to separate census systems in Scotland/NI.
         
         1. **Population Data by Age Demographics**
-           - Source: Office for National Statistics (ONS) - Mid-2022 Population Estimates
+           - Source: [ONS Mid-2022 Population Estimates](https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2022)
            - Total UK Population: 67,736,802
            - Geographic Coverage: England, Scotland, Wales, Northern Ireland
            
@@ -1273,25 +2181,29 @@ def main():
              * Median income: ~£15k-£20k (pension income)
         
         2. **Age Distribution Summary**
-           - Source: ONS Population Estimates by Age and Sex
+           - Source: [ONS Population Estimates by Age and Sex](https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationestimatesforukenglandandwalesscotlandandnorthernireland)
            - Data Year: 2022
            - All percentages are of total adult population (18+) unless specified
         
         3. **Ethnicity**
-           - Source: ONS Census 2021
+           - Source: [ONS Census 2021 - Ethnic Group, England and Wales](https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/ethnicity/bulletins/ethnicgroupenglandandwales/census2021)
            - **Coverage: England and Wales ONLY** (Scotland and Northern Ireland have separate census systems)
            - Note: Applied to full UK population as best available approximation
            - Categories: White (81.6%), Asian (9.3%), Black (4.0%), Mixed (2.9%), Other (2.2%)
         
         4. **Height Distribution**
-           - Source: NHS Health Survey for England & academic studies
-           - Male: Mean 175.3cm, SD 7.1cm
-           - Female: Mean 161.6cm, SD 6.5cm
+           - Source: [NHS Health Survey for England 2021](https://digital.nhs.uk/data-and-information/publications/statistical/health-survey-for-england/2021) & [Academic Studies on UK Height](https://www.bmj.com/content/bmj/early/2016/07/26/bmj.i3989.full.pdf)
+           - **Male:** 
+             * Mean (Average): 175.3cm (5'9") / Median: 175cm (5'9")
+             * Standard Deviation: 7.1cm
+           - **Female:** 
+             * Mean (Average): 161.6cm (5'3.5") / Median: 162cm (5'4")
+             * Standard Deviation: 6.5cm
            - Normal distribution assumed
         
         5. **Body Type / BMI Distribution**
-           - Source: NHS Health Survey for England 2021
-           - BMI categories based on WHO standards
+           - Source: [NHS Health Survey for England 2021 - Adult Obesity](https://digital.nhs.uk/data-and-information/publications/statistical/health-survey-for-england/2021/part-1-overweight-and-obesity-in-adults-and-children)
+           - BMI categories based on [WHO Standards](https://www.who.int/europe/news-room/fact-sheets/item/a-healthy-lifestyle---who-recommendations)
            
            **Male BMI Distribution:**
            - Underweight (BMI < 18.5): 2%
@@ -1306,31 +2218,57 @@ def main():
            - Obese (BMI 30+): 26%
         
         6. **Income Distribution**
-           - Source: ONS Annual Survey of Hours and Earnings (ASHE) 2023
+           - Source: [ONS Annual Survey of Hours and Earnings (ASHE) 2023](https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours/bulletins/annualsurveyofhoursandearnings/2023) + [HMRC Income Tax Liabilities Statistics 2022-23](https://www.gov.uk/government/statistics/income-tax-liabilities-statistics-2020-to-2021)
            - Gross annual earnings by gender
            - Full-time workers aged 18-65
+           - **High earners (£100k+):** Includes self-employed, business owners, and company directors from HMRC Self Assessment data
            
            **UK Salary Benchmarks (2024):**
-           - National Living Wage (21+): £11.44/hour = £22,308/year (37.5hrs/wk)
+           - National Living Wage (21+): £11.44/hour = £22,308/year (37.5hrs/wk) - [Gov.uk NLW Rates](https://www.gov.uk/national-minimum-wage-rates)
            - National Minimum Wage (18-20): £8.60/hour = £16,770/year
            - UK Median Salary: £31,285/year
            - UK Average (Mean) Salary: £33,000/year
            
-           *Note: Income varies significantly by age, with peak earning in 45-54 age group*
+           **High Income Distribution (HMRC Self Assessment 2022-23):**
+           - £100k-£150k: ~1.5-2% (male), ~1.5% (female)
+           - £150k-£250k: ~0.5-0.7% (male), ~0.3% (female)
+           - £250k-£500k: ~0.3% (male), ~0.12% (female)
+           - £500k-£1M: ~0.06% (male), ~0.02% (female)
+           - £1M+: ~0.04% (male), ~0.01% (female)
+           
+           *Note: ASHE only captures PAYE employees. High earners often receive income through dividends, 
+           capital gains, or business profits reported via Self Assessment. The combined ASHE + HMRC approach 
+           provides a more complete picture of the income distribution, especially for entrepreneurs and 
+           company directors who may underreport on traditional salary surveys.*
+           
+           *Income varies significantly by age, with peak earning in 45-54 age group*
         
         7. **Education Levels**
-           - Source: ONS Education statistics 2022
+           - Source: [ONS Education and Training Statistics 2022](https://www.ons.gov.uk/peoplepopulationandcommunity/educationandchildcare)
            - Highest qualification attained by adults
         
         8. **Relationship Status**
-           - Source: ONS Families and Households 2022
+           - Source: [ONS Families and Households 2022](https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/families/bulletins/familiesandhouseholds/2022)
            - Single rate: ~35% of UK adults are not in a relationship
         
         9. **Sexual Orientation**
-           - Source: ONS Sexual Orientation, UK 2022
+           - Source: [ONS Sexual Orientation, UK 2022](https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/sexuality/bulletins/sexualidentityuk/2022)
            - Heterosexual/Straight: 93.2%, Gay/Lesbian: 1.5%, Bisexual: 1.7%
            - Data from adults aged 16+ in England and Wales
-           - [ONS Sexual Orientation Data](https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/sexuality)
+        
+        10. **Children Distribution**
+           - Source: [ONS Families and Households 2022](https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/families/bulletins/familiesandhouseholds/2022)
+           - Percentage of adults by number of children
+           - No children (43%), 1 child (18%), 2 children (24%), 3+ children (15%)
+        
+        11. **Marriage History**
+           - Source: [ONS Marriage Statistics 2022](https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/marriagecohabitationandcivilpartnerships/bulletins/marriagesinenglandandwalesprovisional/2022)
+           - Distribution by marital status: Never married (42%), Currently married (46%), Divorced (9%), Widowed (3%)
+        
+        12. **Male Pattern Baldness**
+           - Source: [British Association of Dermatologists](https://www.bad.org.uk/) & [Academic Research on Androgenetic Alopecia](https://pubmed.ncbi.nlm.nih.gov/28396101/)
+           - Age-dependent prevalence based on clinical studies
+           - 18-29: 16%, 30-39: 32%, 40-49: 53%, 50-59: 63%, 60+: 80%
         
         ### Methodology
         
@@ -1374,14 +2312,18 @@ def main():
         - Example: Selecting "Healthy" + "Overweight" for males = 31% + 41% = 72%
         
         **5. Income Probability**
-        - Uses quintile distribution from ONS Annual Survey of Hours and Earnings
+        - Uses combined data from ONS Annual Survey of Hours and Earnings (ASHE) + HMRC Self Assessment
+        - ASHE captures PAYE employees (majority of workforce)
+        - HMRC Self Assessment captures self-employed, business owners, and high earners receiving dividends/capital gains
         - Assumes uniform distribution within each income bracket
         - Gender-specific (males typically earn more on average)
         - Interpolates for specific income thresholds
+        - **Minimum income filter:** Includes everyone earning AT OR ABOVE the selected threshold
         
         **6. Education Probability**
         - Direct lookup from ONS education attainment statistics
-        - Sum of selected education levels
+        - **Minimum education filter:** Selecting a level includes that level AND ALL HIGHER qualifications
+        - Example: Selecting "GCSE" includes GCSE (23%) + A-Level (21%) + Undergraduate (27%) + Postgraduate (14%) = 85%
         - Based on highest qualification achieved
         
         **7. Ethnicity Probability**
@@ -1504,14 +2446,48 @@ def main():
         The model is mathematically sound but subject to the assumptions above.
         
         ### References
-        - [ONS Population Estimates](https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates)
-        - [Census 2021 Ethnicity Data](https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/ethnicity)
-        - [NHS Health Survey](https://digital.nhs.uk/data-and-information/publications/statistical/health-survey-for-england)
-        - [ASHE Income Data](https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours)
+        - [ONS Population Estimates](https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2022)
+        - [ONS Census 2021 Ethnicity Data](https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/ethnicity/bulletins/ethnicgroupenglandandwales/census2021)
+        - [NHS Health Survey for England 2021](https://digital.nhs.uk/data-and-information/publications/statistical/health-survey-for-england/2021)
+        - [ONS Annual Survey of Hours and Earnings (ASHE)](https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours/bulletins/annualsurveyofhoursandearnings/2023)
+        - [HMRC Self Assessment Statistics](https://www.gov.uk/government/statistics/income-tax-liabilities-statistics-2020-to-2021) - High earner data
+        - [ONS Sexual Orientation UK](https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/sexuality/bulletins/sexualidentityuk/2022)
+        - [ONS Families and Households](https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/families/bulletins/familiesandhouseholds/2022)
         
         ---
         *Last updated: December 2025*  
         *Calculator version: 1.0*
+        """)
+    
+    # Marriage Statistics Section - Always Visible
+    st.markdown("---")
+    st.markdown("## 💍 UK Marriage & Relationship Statistics")
+    st.caption("Comprehensive marriage, divorce, and relationship data for the UK (2022-2023)")
+    
+    st.info("**💡 Tip:** Use the calculator above first, then explore these statistics. When you calculate your dating pool, you'll see customized insights based on your criteria.")
+    
+    # Simple collapsible section for marriage stats
+    with st.expander("📊 Explore Marriage Statistics", expanded=False):
+        st.markdown("### Quick Facts")
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric("Total Marriages (2022)", "249,793", help="England & Wales")
+        with col2:
+            st.metric("Opposite-Sex", "242,842", "97.2%")
+        with col3:
+            st.metric("Same-Sex", "6,951", "2.8%")
+        
+        st.markdown("---")
+        st.markdown("""
+        **For detailed marriage statistics including:**
+        - Marriage trends over time
+        - Age at marriage statistics
+        - Divorce rates and reasons
+        - Who initiates divorce
+        - Remarriage statistics
+        - Regional variations
+        
+        **👉 Use the calculator above and click the "💍 Marriage Statistics" tab in your results!**
         """)
     
     # Footer

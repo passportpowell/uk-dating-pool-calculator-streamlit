@@ -12,16 +12,48 @@ A Streamlit web application that calculates your realistic dating pool size usin
 
 **[Launch Calculator →](http://99.81.223.163:32768/)**
 
-## Features
+## ✨ Key Features
 
-- 🎯 **Real UK Statistics**: All data sourced from ONS, NHS, and official UK government sources
-- 📊 **Multi-Select Race Filter**: Choose multiple ethnicities based on 2021 Census data
-- 💰 **Income Analysis**: Based on ONS Annual Survey of Hours and Earnings (ASHE)
-- 📏 **Height Statistics**: NHS health survey data with normal distribution modeling
-- 🎓 **Education Levels**: From ONS education statistics
-- 💑 **Relationship Status**: Filters for single/available people
+### Calculator Features
+- 🎯 **Real UK Statistics**: All data sourced from ONS, NHS, HMRC, and official UK government sources
+- 📊 **Comprehensive Filters**: 
+  - Age range selection
+  - Height preferences (with feet/inches display)
+  - Body type (BMI categories)
+  - **Income levels** (£0 to £1M+, includes self-employed & business owners from HMRC data)
+  - **Education** (minimum level and above - e.g., selecting "GCSE" includes A-Level, Undergraduate, Postgraduate)
+  - Multiple ethnicity selection (2021 Census)
+  - Sexual orientation compatibility
+  - Relationship status
+  - Children preferences
+  - Marriage history
+  - Male pattern baldness (age-adjusted)
+
+### New Features (December 2025)
+- 💍 **Extensive Marriage Statistics Section**: Always visible, explore before calculating
+  - Marriage trends (2013-2022)
+  - Divorce statistics and reasons
+  - Age at marriage analysis
+  - Who initiates divorce
+  - Remarriage statistics
+  - Regional variations
+  - International comparisons
+  - All sections collapsible for easy navigation
+- 💰 **Enhanced Income Data**: Now includes millionaires (£1M+) and accounts for self-employed/business owners via HMRC Self Assessment data
+- 🎓 **Smart Education Filter**: Select minimum level, automatically includes all higher qualifications
+- 📏 **Height Display**: Shows both metric (cm) and imperial (feet/inches)
+- 🔗 **Complete Source Links**: Every data source has valid hyperlinks to official documents
+- 📅 **Data Frequency Info**: Know when statistics are updated
+
+### Visualization
 - 📈 **Interactive Breakdown**: See how each filter affects your dating pool
-- 📚 **Full Source Citations**: Every statistic is properly sourced and referenced
+- 🗺️ **Regional Distribution**: UK map showing matches by region
+- 📊 **Probability Cascade**: Understand cumulative filtering effects
+
+### Documentation
+- 📚 **Full Source Citations**: Every statistic properly sourced and referenced
+- 🔍 **Methodology Explained**: Complete transparency on calculations
+- ⚠️ **Limitations Disclosed**: Honest about what the calculator can and cannot predict
 
 ## Installation
 
