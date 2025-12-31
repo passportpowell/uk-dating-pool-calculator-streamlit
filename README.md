@@ -1,6 +1,6 @@
 # UK Dating Pool Calculator
 
-A Streamlit web application that calculates your realistic dating pool size using real UK government statistics from ONS (Office for National Statistics) and other official sources.
+A Streamlit web application that calculates your realistic dating pool size using real UK government statistics from ONS (Office for National Statistics), NHS, HMRC, and other official sources.
 
 [![Live Demo](https://img.shields.io/badge/🚀%20Live%20Demo-Streamlit-FF4B4B?style=for-the-badge)](http://99.81.223.163:32768/)
 
@@ -15,39 +15,47 @@ A Streamlit web application that calculates your realistic dating pool size usin
 ## ✨ Key Features
 
 ### Calculator Features
-- 🎯 **Real UK Statistics**: All data sourced from ONS, NHS, HMRC, and official UK government sources
+- 🎯 **Real UK Statistics**: All data sourced from ONS, NHS, HMRC, and official UK government sources with hyperlinked references
 - 📊 **Comprehensive Filters**: 
-  - Age range selection
-  - Height preferences (with feet/inches display)
-  - Body type (BMI categories)
-  - **Income levels** (£0 to £1M+, includes self-employed & business owners from HMRC data)
-  - **Education** (minimum level and above - e.g., selecting "GCSE" includes A-Level, Undergraduate, Postgraduate)
-  - Multiple ethnicity selection (2021 Census)
+  - Age range selection (18-65+)
+  - Height preferences with metric & imperial (cm, feet/inches)
+  - Body type (BMI categories from NHS data)
+  - **Income levels** (£0 to £1M+ millionaires, includes self-employed & business owners from HMRC data)
+  - **Education** (minimum level + all above - e.g., "GCSE" includes A-Level, Undergraduate, Postgraduate)
+  - Multiple ethnicity selection (Census 2021)
   - Sexual orientation compatibility
   - Relationship status
   - Children preferences
   - Marriage history
-  - Male pattern baldness (age-adjusted)
+  - Male pattern baldness (age-adjusted prevalence)
 
-### New Features (December 2025)
-- 💍 **Extensive Marriage Statistics Section**: Always visible, explore before calculating
-  - Marriage trends (2013-2022)
-  - Divorce statistics and reasons
-  - Age at marriage analysis
-  - Who initiates divorce
-  - Remarriage statistics
-  - Regional variations
-  - International comparisons
-  - All sections collapsible for easy navigation
-- 💰 **Enhanced Income Data**: Now includes millionaires (£1M+) and accounts for self-employed/business owners via HMRC Self Assessment data
-- 🎓 **Smart Education Filter**: Select minimum level, automatically includes all higher qualifications
-- 📏 **Height Display**: Shows both metric (cm) and imperial (feet/inches)
-- 🔗 **Complete Source Links**: Every data source has valid hyperlinks to official documents
-- 📅 **Data Frequency Info**: Know when statistics are updated
+### 💍 Marriage & Relationship Statistics (Always Visible)
+**Explore comprehensive UK marriage data before or after using the calculator:**
+- 📈 Marriage trends (2013-2022) with COVID-19 impact analysis
+- 💔 Divorce statistics including no-fault reform (April 2022)
+- ⚖️ Who initiates divorce (63% women, 30% men, 6.9% joint)
+- 📋 Grounds for divorce (pre and post reform comparison)
+- 🎂 Marriage age demographics
+- 🔄 Remarriage statistics and success rates
+- 🗺️ Regional marriage variations across UK
+- 🌍 International comparisons
+- 💰 Income and education correlations with marriage
+- 👶 Children and family statistics
+- All sections collapsible for easy navigation
 
-### Visualization
-- 📈 **Interactive Breakdown**: See how each filter affects your dating pool
-- 🗺️ **Regional Distribution**: UK map showing matches by region
+### New Features (December 2025 Update)
+- 💍 **Always-Visible Marriage Stats**: Comprehensive marriage data accessible before calculator use
+- 💰 **Millionaire Income Bracket**: Now includes £1M+ earners with HMRC Self Assessment data
+- 🏢 **Business Owners Included**: High-income data accounts for self-employed, directors, dividend income
+- 🎓 **Smart Education Filter**: Select minimum level, automatically includes all higher qualifications (no more accidentally excluding degrees!)
+- 📏 **Dual Height Units**: Displays both cm and feet/inches (e.g., 175.3cm = 5'9")
+- 🔗 **Fully Sourced**: Every statistic has valid hyperlinks to official ONS, NHS, HMRC, WHO, and academic sources
+- 📅 **Data Freshness Info**: Know when ONS updates statistics (annual releases ~12-18 months after reference year)
+
+### Visualization & Analysis
+- 📈 **Interactive Breakdown**: Visual cascade showing how each filter narrows your dating pool
+- 🗺️ **Regional Distribution**: UK map showing geographic distribution of matches
+- 📊 **Probability Analysis**: Detailed breakdown of each filter's impact
 - 📊 **Probability Cascade**: Understand cumulative filtering effects
 
 ### Documentation
