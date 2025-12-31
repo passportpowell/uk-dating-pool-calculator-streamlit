@@ -306,11 +306,20 @@ CHILDREN_DISTRIBUTION = {
 
 # Marriage history (% of adults)
 # Source: ONS Marriage statistics 2022
+# Note: Same-sex marriage legalized in 2014, so currently married rates are lower for same-sex couples
 MARRIAGE_HISTORY = {
-    "Never married": 0.42,
-    "Currently married": 0.46,
-    "Divorced": 0.09,
-    "Widowed": 0.03
+    "opposite-sex": {
+        "Never married": 0.42,
+        "Currently married": 0.46,
+        "Divorced": 0.09,
+        "Widowed": 0.03
+    },
+    "same-sex": {
+        "Never married": 0.89,  # Much higher as same-sex marriage only legal since 2014
+        "Currently married": 0.08,  # Lower due to recent legalization
+        "Divorced": 0.02,  # Lower due to shorter time period
+        "Widowed": 0.01   # Lower due to younger average age and recent legalization
+    }
 }
 
 # Male baldness distribution by age
@@ -534,12 +543,37 @@ def calculate_children_probability(acceptable_children):
         probability += CHILDREN_DISTRIBUTION[children_status]
     return probability
 
-def calculate_marriage_probability(acceptable_marriage_history):
-    """Calculate probability someone has acceptable marriage history"""
-    probability = 0
-    for status in acceptable_marriage_history:
-        probability += MARRIAGE_HISTORY[status]
-    return probability
+def calculate_marriage_probability(acceptable_marriage_history, user_gender, looking_for_gender):
+    """Calculate probability someone has acceptable marriage history
+    
+    Args:
+        acceptable_marriage_history: List of acceptable marriage statuses
+        user_gender: Gender of the user ("Male" or "Female")
+        looking_for_gender: Gender being sought ("Male", "Female", or "Any")
+    
+    Returns:
+        Probability (0-1) that someone matches the marriage criteria
+    """
+    # Determine if this is a same-sex or opposite-sex relationship
+    if looking_for_gender == "Any":
+        # For bisexual users looking for any gender, use weighted average
+        # Assume they match with opposite-sex at higher rate (more available)
+        opposite_prob = sum(MARRIAGE_HISTORY["opposite-sex"][status] for status in acceptable_marriage_history)
+        same_prob = sum(MARRIAGE_HISTORY["same-sex"][status] for status in acceptable_marriage_history)
+        # Weight by population availability (~93% straight, ~7% LGB)
+        return 0.93 * opposite_prob + 0.07 * same_prob
+    elif user_gender == looking_for_gender:
+        # Same-sex relationship
+        probability = 0
+        for status in acceptable_marriage_history:
+            probability += MARRIAGE_HISTORY["same-sex"][status]
+        return probability
+    else:
+        # Opposite-sex relationship
+        probability = 0
+        for status in acceptable_marriage_history:
+            probability += MARRIAGE_HISTORY["opposite-sex"][status]
+        return probability
 
 def calculate_baldness_probability(baldness_preference, age_range):
     """Calculate probability of baldness preference match for males"""
@@ -1148,8 +1182,8 @@ def main():
             # Children probability
             children_prob = calculate_children_probability(acceptable_children)
             
-            # Marriage history probability
-            marriage_prob = calculate_marriage_probability(acceptable_marriage_history)
+            # Marriage history probability (now accounts for same-sex vs opposite-sex relationships)
+            marriage_prob = calculate_marriage_probability(acceptable_marriage_history, user_gender, looking_for)
             
             # Baldness probability (only applies to males)
             if looking_for == "Male":
