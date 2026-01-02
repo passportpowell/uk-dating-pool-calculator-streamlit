@@ -21,6 +21,7 @@ def display_baby_statistics_tab():
     st.markdown('<div class="info-card">', unsafe_allow_html=True)
     st.markdown("## 📊 Overview: All Pregnancy Outcomes by Maternal Age", unsafe_allow_html=True)
     st.markdown("""**Compare everything at a glance:** This comprehensive table and chart show how maternal age affects all major pregnancy outcomes and risks.""")
+    st.info("**📖 Sources:** ONS Birth Statistics, MBRRACE-UK Reports, PHE Congenital Anomaly Statistics, HFEA Fertility Data")
     st.markdown("")
     
     # Prepare comprehensive data
@@ -283,6 +284,7 @@ def display_baby_statistics_tab():
         - UK has one of the lowest maternal mortality rates globally
         - Significant improvement over past decade
         - Target: Reduce to below 7 per 100,000""")
+        st.info("**📖 Source:** [MBRRACE-UK Maternal Mortality Reports](https://www.npeu.ox.ac.uk/mbrrace-uk) - Confidential Enquiry into Maternal Deaths")
         st.markdown("")
         
         # Create dataframe
@@ -392,7 +394,8 @@ def display_baby_statistics_tab():
         **Understanding the data:**
         - Stillbirth = death before or during birth (after 24 weeks)
         - UK has one of the lowest stillbirth rates globally
-        - Continuous improvement through better antenatal care""")
+        - Cinfo("**📖 Source:** [ONS Child Mortality Statistics](https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/bulletins/childhoodinfantandperinatalmortalityinenglandandwales/latest) - Annual Stillbirth Data")
+        st.ontinuous improvement through better antenatal care""")
         st.markdown("")
         
         stillbirth_data = BABY_HEALTH_DATA["stillbirth_rates"]
@@ -535,7 +538,8 @@ def display_baby_statistics_tab():
         **Categories:**
         - **Neonatal:** Deaths 0-28 days (most critical period)
         - **Post-neonatal:** Deaths 28 days to 1 year
-        - **Total infant mortality:** Combined rate""")
+        - *info("**📖 Source:** [ONS Child Mortality Statistics](https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/deaths/bulletins/childhoodinfantandperinatalmortalityinenglandandwales/latest) - Infant & Neonatal Deaths")
+        st.*Total infant mortality:** Combined rate""")
         st.markdown("")
         
         infant_data = BABY_HEALTH_DATA["infant_mortality"]
@@ -656,7 +660,8 @@ def display_baby_statistics_tab():
         **Key trends:**
         - Parents having children later in life
         - Women over 35 now account for 1 in 3 births
-        - Teen pregnancies declining dramatically""")
+        - Tinfo("**📖 Source:** [ONS Birth Statistics](https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/livebirths) - Births by Parents' Characteristics")
+        st.een pregnancies declining dramatically""")
         st.markdown("")
         
         parent_age_data = BABY_HEALTH_DATA["parental_age_statistics"]
@@ -726,7 +731,8 @@ def display_baby_statistics_tab():
         st.markdown('<div class="info-card">', unsafe_allow_html=True)
         st.markdown("""**What this shows:** Prevalence of chromosomal disorders and congenital anomalies.
         
-        **Important note:** Many of these are now detected prenatally through screening""")
+        **Iinfo("**📖 Sources:** [PHE Congenital Anomaly Statistics](https://www.gov.uk/government/collections/congenital-anomaly-statistics), NHS Fetal Anomaly Screening Programme, National Down Syndrome Cytogenetic Register")
+        st.mportant note:** Many of these are now detected prenatally through screening""")
         st.markdown("")
         
         col1, col2 = st.columns(2)
@@ -828,7 +834,8 @@ def display_baby_statistics_tab():
         st.markdown('<div class="info-card">', unsafe_allow_html=True)
         st.markdown("""**What this shows:** Prevalence of mental health disorders in children aged 5-15.
         
-        **Alarming trend:** Significant increase, especially post-COVID-19 pandemic""")
+        **Ainfo("**📖 Source:** [NHS Digital Mental Health of Children and Young People in England Survey](https://digital.nhs.uk/data-and-information/publications/statistical/mental-health-of-children-and-young-people-in-england) - Longitudinal studies 2004-2022")
+        st.larming trend:** Significant increase, especially post-COVID-19 pandemic""")
         st.markdown("")
         
         mental_data = BABY_HEALTH_DATA["child_mental_health"]
@@ -927,6 +934,7 @@ def display_baby_statistics_tab():
     
     # Child Physical Health
     with st.expander("🏃 Child Physical Health (Obesity, Asthma, Allergies)", expanded=False):
+        st.info("**📖 Sources:** [NHS Digital National Child Measurement Programme](https://digital.nhs.uk/data-and-information/publications/statistical/national-child-measurement-programme) (obesity), [NHS Health Survey for England](https://digital.nhs.uk/data-and-information/publications/statistical/health-survey-for-england) (asthma, allergies), Public Health England Oral Health Surveys (dental)")
         st.markdown('<div class="info-card">', unsafe_allow_html=True)
         st.markdown("""**What this shows:** Prevalence of common childhood physical health conditions.""")
         st.markdown("")
@@ -997,7 +1005,8 @@ def display_baby_statistics_tab():
         
         **Categories:**
         - **Overall preterm:** Before 37 weeks (most common)
-        - **Very preterm:** Before 32 weeks (serious risks)
+        - *info("**📖 Sources:** [ONS Birth Statistics](https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/livebirths) (preterm rates), National Neonatal Research Database, EPICure Studies (survival rates)")
+        st.*Very preterm:** Before 32 weeks (serious risks)
         - **Extremely preterm:** Before 28 weeks (highest risk)""")
         st.markdown("")
         
@@ -1070,6 +1079,7 @@ def display_baby_statistics_tab():
     
     # Fertility and IVF
     with st.expander("🧪 Fertility, IVF & Miscarriage Rates", expanded=False):
+        st.info("**📖 Sources:** [HFEA Fertility Treatment Data](https://www.hfea.gov.uk/about-us/publications/research-and-data/) (IVF success rates), Tommy's National Miscarriage Research Centre, Royal College of Obstetricians and Gynaecologists (RCOG)")
         st.markdown('<div class="info-card">', unsafe_allow_html=True)
         st.markdown("""**What this shows:** IVF success rates and miscarriage statistics by age.""")
         st.markdown("")
@@ -1147,6 +1157,7 @@ def display_baby_statistics_tab():
     with st.expander("⚠️ Birth Complications by Maternal Age", expanded=False):
         st.markdown('<div class="info-card">', unsafe_allow_html=True)
         st.markdown("""**What this shows:** How birth complication rates vary by mother's age.""")
+        st.info("**📖 Sources:** [NHS Maternity Statistics](https://digital.nhs.uk/data-and-information/publications/statistical/nhs-maternity-statistics) (C-sections, complications), ONS Birth Characteristics (age-related outcomes), MBRRACE-UK Reports")
         st.markdown("")
         
         complications = BABY_HEALTH_DATA["birth_complications_by_maternal_age"]
