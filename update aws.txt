@@ -1,0 +1,24 @@
+run this 
+
+# Create requirements.txt with all needed modules
+cat > requirements.txt << 'EOF'
+streamlit
+pandas
+numpy
+folium
+streamlit-folium
+scipy
+plotly
+EOF
+
+# Install the requirements
+pip install -r requirements.txt
+
+# Then rebuild and restart the Docker container
+docker stop uk-dating-pool-calculator-streamlit
+docker rm uk-dating-pool-calculator-streamlit
+docker build -t uk-dating-pool-calculator-streamlit:latest .
+docker run -d --name uk-dating-pool-calculator-streamlit -p 32768:8501 --restart unless-stopped uk-dating-pool-calculator-streamlit:latest
+
+# Check the logs to see if it starts successfully
+docker logs -f uk-dating-pool-calculator-streamlit
