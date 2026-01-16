@@ -1,0 +1,13 @@
+Node,Latitude,Longitude,Region,Population
+UK_London,51.5074,-0.1278,Greater London,9002488
+UK_Southeast,51.3148,-0.5596,South East England,9180135
+UK_Northwest,53.4808,-2.2426,North West England,7417283
+UK_EastEngland,52.2405,0.5100,East of England,6236072
+UK_WestMidlands,52.4862,-1.8904,West Midlands,5934037
+UK_Southwest,50.7156,-3.5309,South West England,5624696
+UK_Yorkshire,53.8008,-1.5491,Yorkshire and the Humber,5502967
+UK_EastMidlands,52.9548,-1.1581,East Midlands,4880054
+UK_Scotland,55.9533,-3.1883,Scotland,5466000
+UK_Wales,52.1307,-3.7837,Wales,3136000
+UK_NortheastEngland,54.9783,-1.6178,North East England,2647000
+UK_NorthernIreland,54.5973,-5.9301,Northern Ireland,1895510

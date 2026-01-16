@@ -1,0 +1,28 @@
+# Python build/cache artifacts
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+
+# IDE/editor metadata
+.vscode/
+.idea/
+
+# Environment files
+.env
+
+*Copy*
+*copy*
+*COPY*
+*- Copy*
+* - Copy.*
+* - copy.*
+* - COPY.*   
+
+
+archive/**
+!archive/root_cleanup_2026-01-16/
+!archive/root_cleanup_2026-01-16/**

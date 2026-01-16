@@ -1,0 +1,66 @@
+[
+  {
+    "dataset": "ethnicity_distribution",
+    "source_file": "censusbasedstatisticsuk2021.xlsx",
+    "source_url": "https://www.ons.gov.uk/census",
+    "last_fetched": "2025-01-06T12:00:00",
+    "notes": "Extracted from Census 2021 Table_06. Broad categories distributed proportionally into detailed categories as approximation."
+  },
+  {
+    "source": "Census 2021 (manual extraction needed)",
+    "file": "censusbasedstatisticsuk2021.xlsx",
+    "note": "Complex multi-sheet file - requires manual table identification"
+  },
+  {
+    "source": "ONS Families & Households 2024",
+    "file": "Families and households in the UK 2024.pdf",
+    "note": "PDF format - manual extraction required. Look for 'Living arrangements by age' table."
+  },
+  {
+    "source": "ONS Labour Force Survey Q4 2023",
+    "file": "Labour Force Survey performance and quality monitoring report_ October to December 2023.pdf",
+    "note": "PDF format - manual extraction required. Look for employment rates by age/gender."
+  },
+  {
+    "source": "ONS Working/Workless Households Q3 2025",
+    "file": "Working and workless households in the UK July to September 2025.pdf",
+    "note": "PDF format - contains household employment data, may supplement LFS"
+  },
+  {
+    "source": "ONS ASHE 2025",
+    "file": "Employee earnings in the UK 2025.pdf",
+    "note": "PDF format - manual extraction required. Look for income percentiles by gender."
+  },
+  {
+    "source": "HMRC Self-Employment Income 2022-2023",
+    "file": "Table_3.10_2223 Income of individuals with self-employment income 2022 to 2023.ods",
+    "note": "ODS format - install odfpy to read: pip install odfpy"
+  },
+  {
+    "source": "HMRC Personal Incomes Statistics 2022-2023",
+    "file": "Personal Incomes Statistics 2022 to 2023 Summary Statistics.pdf",
+    "note": "PDF format - contains tax data, can supplement income distributions"
+  },
+  {
+    "source": "HMRC Trusts Statistics Dec 2025",
+    "file": "Statistics on trusts in the UK December 2025.pdf",
+    "note": "PDF format - trust data, likely not directly relevant to dating pool"
+  },
+  {
+    "dataset": "income_distribution",
+    "source_file": "Home Geography Table 8.7a   Annual pay - Gross 2024.xlsx",
+    "source_url": "https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours/datasets/ashetable8geographicstandardtables",
+    "last_fetched": "2026-01-16T01:06:32.969974",
+    "notes": "Extracted from ASHE Table 8.7a (Annual pay - Gross 2024). Mapped percentiles to income brackets. Separate distributions for male and female.",
+    "percentile_mapping": {
+      "Under \u00a310k": "0-10th percentile",
+      "\u00a310k-\u00a320k": "10-20th percentile",
+      "\u00a320k-\u00a330k": "20-30th percentile",
+      "\u00a330k-\u00a340k": "30-40th percentile",
+      "\u00a340k-\u00a350k": "40-50th percentile",
+      "\u00a350k-\u00a375k": "50-75th percentile",
+      "\u00a375k-\u00a3100k": "75-90th percentile",
+      "Over \u00a3100k": "90-100th percentile"
+    }
+  }
+]

@@ -1,0 +1,40 @@
+[server]
+# Enable file watcher to auto-reload on save
+fileWatcherType = "auto"
+
+# Run the server on save
+runOnSave = true
+
+# Port configuration (default 8501)
+port = 8501
+
+# Enable CORS for development (must be true when XSRF protection is enabled)
+enableCORS = true
+
+# Enable XSRFProtection
+enableXsrfProtection = true
+
+[browser]
+# Automatically open browser on startup
+gatherUsageStats = false
+
+[runner]
+# Faster reruns
+fastReruns = true
+
+# Magic commands enabled
+magicEnabled = true
+
+[client]
+# Show error details
+showErrorDetails = true
+
+# Toolbar mode
+toolbarMode = "auto"
+
+[theme]
+# Optional: Uncomment to set a custom theme
+# primaryColor = "#667eea"
+# backgroundColor = "#0e1117"
+# secondaryBackgroundColor = "#262730"
+# textColor = "#fafafa"

@@ -1,0 +1,58 @@
+[
+  {
+    "name": "Ethnicity Distribution (Census 2021)",
+    "type": "simple_kv",
+    "outfile": "ethnicity_distribution.csv",
+    "format": "csv",
+    "source": "",  
+    "notes": "Provide a direct CSV or XLSX link for ethnicity shares; map to key,value."
+  },
+  {
+    "name": "Single Rate by Age (ONS F&H 2022)",
+    "type": "simple_kv",
+    "outfile": "single_rate_by_age.csv",
+    "format": "csv",
+    "source": "",
+    "notes": "Provide a table of age bands (e.g., 18-24) to rate (0-1)."
+  },
+  {
+    "name": "Employment Rate by Age & Gender (ONS LFS 2023)",
+    "type": "employment",
+    "outfile": "employment_rate_by_age_gender.csv",
+    "format": "csv",
+    "source": "",
+    "notes": "Columns: age_band, gender, rate (0-1)."
+  },
+  {
+    "name": "Income Distribution (Male, ASHE 2023)",
+    "type": "simple_kv",
+    "outfile": "income_distribution_male.csv",
+    "format": "csv",
+    "source": "",
+    "notes": "Brackets to shares mapping; normalize to 1.0."
+  },
+  {
+    "name": "Income Distribution (Female, ASHE 2023)",
+    "type": "simple_kv",
+    "outfile": "income_distribution_female.csv",
+    "format": "csv",
+    "source": "",
+    "notes": "Brackets to shares mapping; normalize to 1.0."
+  },
+  {
+    "name": "Self-Employed Income (Male, HMRC)",
+    "type": "simple_kv",
+    "outfile": "self_employed_income_distribution_male.csv",
+    "format": "csv",
+    "source": "",
+    "notes": "Brackets to shares mapping; normalize to 1.0."
+  },
+  {
+    "name": "Self-Employed Income (Female, HMRC)",
+    "type": "simple_kv",
+    "outfile": "self_employed_income_distribution_female.csv",
+    "format": "csv",
+    "source": "",
+    "notes": "Brackets to shares mapping; normalize to 1.0."
+  }
+]

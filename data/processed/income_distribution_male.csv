@@ -1,0 +1,9 @@
+income_bracket,probability
+Under £10k,0.1
+£10k-£20k,0.1
+£20k-£30k,0.1
+£30k-£40k,0.1
+£40k-£50k,0.1
+£50k-£75k,0.25
+£75k-£100k,0.15
+Over £100k,0.1
