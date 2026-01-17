@@ -812,7 +812,7 @@ if calculate_button:
     st.dataframe(summary_df, hide_index=True, use_container_width=True)
     
     st.markdown("---")
-    
+
     # Detailed breakdowns by category
     st.subheader("📊 Detailed Cost Breakdown")
     
