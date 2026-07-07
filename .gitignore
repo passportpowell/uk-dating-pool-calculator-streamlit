@@ -7,6 +7,15 @@ __pycache__/
 .venv/
 venv/
 
+# Streamlit
+.streamlit/
+
+# Next.js / Node
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+
 # IDE/editor metadata
 .vscode/
 .idea/
