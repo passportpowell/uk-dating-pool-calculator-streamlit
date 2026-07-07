@@ -339,6 +339,29 @@ Verification:
 - Mobile Playwright checks at 390x844 and 430x932 passed for both `/` and `/methodology`: no horizontal overflow, calculator H1 present, Methodology link visible, age/height number inputs visible after opening height controls, target denominator text present, methodology page back link present, 7 official source links present, and Known Caveats present.
 - Desktop stability check at 1280x900 confirmed filter panel x/y/width remained unchanged after a result recalculation (`400px` wide before and after).
 
+## 2026-07-07T23:12:34+01:00 - codex
+
+Pushed the Next/React app to GitHub and deployed it on Vercel production.
+
+GitHub:
+- Remote: `https://github.com/passportpowell/uk-dating-pool-calculator-streamlit.git`
+- Branch pushed: `main`
+- Commits pushed:
+  - `8416a9b Add Next dating pool calculator`
+  - `5238c01 Add calculator library files`
+- Note: remote `main` had been force-reset to a short two-commit history, so I used a clean temporary worktree based on `origin/main`, cherry-picked the Next app commit onto it, resolved the `.gitignore` conflict, and pushed fast-forward. I did not force-push.
+- The first commit missed `temp-next-app/src/lib/*` because the older local root `.gitignore` had a broad `lib/` rule. Vercel caught this during build (`Module not found: Can't resolve '@/lib/data'`). I added the missing `src/lib` files plus `temp-next-app/.gitignore` and pushed `5238c01`.
+
+Vercel:
+- Project/account shown by CLI: `otisofro-3725s-projects/temp-next-app`
+- Production alias: `https://temp-next-app-snowy.vercel.app`
+- Latest deployment URL shown by CLI: `https://temp-next-2fbpbadez-otisofro-3725s-projects.vercel.app`
+- Vercel build passed with Next.js `16.2.10`; generated static routes `/`, `/_not-found`, and `/methodology`.
+- Live check passed for the public alias:
+  - `https://temp-next-app-snowy.vercel.app/` returned HTTP 200 with title `UK Dating Pool Calculator`.
+  - `https://temp-next-app-snowy.vercel.app/methodology` returned HTTP 200 with title `UK Dating Pool Calculator`.
+- The raw deployment URL returned a Vercel login page in `Invoke-WebRequest`, so the public handoff URL should be the alias above.
+
 ## 2026-07-07T22:40:00+01:00 - gemini
 
 Audited Codex's work and changes:
