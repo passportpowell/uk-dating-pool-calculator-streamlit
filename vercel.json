@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "v3/**", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/", "dest": "/v3/calculator.html" },
+    { "src": "/calculator", "dest": "/v3/calculator.html" },
+    { "src": "/data-explorer", "dest": "/v3/index.html" },
+    { "src": "/sources", "dest": "/v3/sources.html" },
+    { "src": "/(.*)", "dest": "/v3/$1" }
+  ]
+}
