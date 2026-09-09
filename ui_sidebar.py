@@ -189,8 +189,8 @@ def create_sidebar():
     st.sidebar.subheader("Income")
     min_income = st.sidebar.selectbox(
         "Minimum annual income (includes this amount and all higher):",
-        ["Any", MIN_WAGE_ANNUAL, 25000, 30000, MEDIAN_SALARY, AVERAGE_SALARY, 
-         40000, 50000, 75000, 100000, 150000, 250000, 500000, 1000000],
+        ["Any", MIN_WAGE_ANNUAL, 25000, 30000, MEDIAN_SALARY, 40000, AVERAGE_SALARY, 
+         50000, 75000, 100000, 150000, 250000, 500000, 1000000],
         format_func=lambda x: "Any" if x == "Any" else (
             f"£{x:,} (Min Wage)" if x == MIN_WAGE_ANNUAL else
             f"£{x:,} (UK Median)" if x == MEDIAN_SALARY else

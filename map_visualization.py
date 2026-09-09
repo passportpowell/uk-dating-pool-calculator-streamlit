@@ -9,11 +9,11 @@ from data import UK_REGIONS, UK_ADULT_POPULATION
 
 def create_dating_pool_map(total_probability):
     """Create an interactive map showing estimated matches by UK region"""
-    # Create base map centered on UK with aesthetic CartoDB Positron tiles
+    # Create base map centered on UK with aesthetic CartoDB Dark Matter tiles
     m = folium.Map(
         location=[54.5, -3.5],
         zoom_start=6,
-        tiles='CartoDB positron',
+        tiles='CartoDB dark_matter',
         attr='Map tiles by CartoDB, under CC BY 3.0. Data by OpenStreetMap, under ODbL.'
     )
     

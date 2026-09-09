@@ -10,8 +10,8 @@ def _normalize(dist):
     return {k: v/s for k, v in dist.items()}
 
 # UK Population data based on ONS statistics
-UK_TOTAL_POPULATION = 67_736_802  # Mid-2022 estimate
-UK_ADULT_POPULATION = 52_600_000  # Ages 18+
+UK_TOTAL_POPULATION = 69_487_000  # Mid-2025 provisional ONS estimate
+UK_ADULT_POPULATION = 54_200_000  # Ages 18+
 
 # Age distribution (% of adults 18+)
 AGE_DISTRIBUTION = {
@@ -23,26 +23,26 @@ AGE_DISTRIBUTION = {
     "65+": 0.174
 }
 
-# Detailed ethnicity distribution (Census 2021)
+# Detailed ethnicity distribution (Census 2021 adjusted for whole-UK population)
 # Normalized to sum to exactly 1.0
 ETHNICITY_DISTRIBUTION = _normalize({
-    "White British": 0.744,
-    "White Irish": 0.009,
-    "White Other": 0.062,
-    "Asian/Asian British - Indian": 0.030,
-    "Asian/Asian British - Pakistani": 0.024,
-    "Asian/Asian British - Bangladeshi": 0.010,
-    "Asian/Asian British - Chinese": 0.009,
-    "Asian/Asian British - Other": 0.020,
-    "Black/Black British - African": 0.025,
-    "Black/Black British - Caribbean": 0.010,
-    "Black/Black British - Other": 0.005,
-    "Mixed - White & Black Caribbean": 0.009,
-    "Mixed - White & Black African": 0.005,
-    "Mixed - White & Asian": 0.008,
-    "Mixed - Other": 0.007,
-    "Arab": 0.006,
-    "Other ethnic group": 0.018
+    "White British": 0.785,
+    "White Irish": 0.012,
+    "White Other": 0.055,
+    "Asian/Asian British - Indian": 0.027,
+    "Asian/Asian British - Pakistani": 0.022,
+    "Asian/Asian British - Bangladeshi": 0.009,
+    "Asian/Asian British - Chinese": 0.008,
+    "Asian/Asian British - Other": 0.018,
+    "Black/Black British - African": 0.022,
+    "Black/Black British - Caribbean": 0.009,
+    "Black/Black British - Other": 0.004,
+    "Mixed - White & Black Caribbean": 0.008,
+    "Mixed - White & Black African": 0.004,
+    "Mixed - White & Asian": 0.007,
+    "Mixed - Other": 0.006,
+    "Arab": 0.005,
+    "Other ethnic group": 0.016
 })
 
 # Height distributions (cm)
@@ -54,7 +54,7 @@ FEMALE_HEIGHT_STD = 6.5
 
 # Income brackets (% of working age population)
 # Source: ONS ASHE 2023 + HMRC Self Assessment data for high earners
-INCOME_DISTRIBUTION_MALE = {
+INCOME_DISTRIBUTION_MALE = _normalize({
     "Under £20k": 0.25,
     "£20k-£30k": 0.22,
     "£30k-£40k": 0.18,
@@ -66,9 +66,9 @@ INCOME_DISTRIBUTION_MALE = {
     "£250k-£500k": 0.003, # HMRC: ~180k taxpayers
     "£500k-£1M": 0.0006,  # HMRC: ~35k taxpayers
     "£1M+": 0.0004        # HMRC: ~23k taxpayers (millionaires+)
-}
+})
 
-INCOME_DISTRIBUTION_FEMALE = {
+INCOME_DISTRIBUTION_FEMALE = _normalize({
     "Under £20k": 0.32,
     "£20k-£30k": 0.25,
     "£30k-£40k": 0.17,
@@ -80,7 +80,7 @@ INCOME_DISTRIBUTION_FEMALE = {
     "£250k-£500k": 0.0012,# HMRC: ~70k taxpayers
     "£500k-£1M": 0.0002,  # HMRC: ~12k taxpayers
     "£1M+": 0.0001        # HMRC: ~6k taxpayers (millionaires+)
-}
+})
 
 # Education levels (% of adults)
 EDUCATION_DISTRIBUTION = {
@@ -299,82 +299,9 @@ UK_REGIONS = {
 }
 
 # UK salary benchmarks
-MIN_WAGE_ANNUAL = 22308  # National Living Wage 21+: £11.44/hr * 37.5hrs/wk * 52wks
-MEDIAN_SALARY = 31285
-AVERAGE_SALARY = 33000
-
-# Marriage history (% of adults)
-# Source: ONS Marriage statistics 2022
-# Note: Same-sex marriage legalized in 2014, so currently married rates are lower for same-sex couples
-MARRIAGE_HISTORY = {
-    "opposite-sex": {
-        "Never married": 0.42,
-        "Currently married": 0.46,
-        "Divorced": 0.09,
-        "Widowed": 0.03
-    },
-    "same-sex": {
-        "Never married": 0.89,  # Much higher as same-sex marriage only legal since 2014
-        "Currently married": 0.08,  # Lower due to recent legalization
-        "Divorced": 0.02,  # Lower due to shorter time period
-        "Widowed": 0.01   # Lower due to younger average age and recent legalization
-    }
-}
-
-# Marriage statistics by ethnicity (Census 2021 - % married or in civil partnership)
-MARRIAGE_RATE_BY_ETHNICITY = {
-    "Asian/Asian British - Indian": 0.658,
-    "Asian/Asian British - Pakistani": 0.634,
-    "Asian/Asian British - Bangladeshi": 0.621,
-    "Asian/Asian British - Chinese": 0.548,
-    "Asian/Asian British - Other": 0.512,
-    "White British": 0.448,
-    "White Irish": 0.442,
-    "Arab": 0.438,
-    "White Other": 0.423,
-    "Black/Black British - African": 0.387,
-    "Other ethnic group": 0.378,
-    "Mixed - White & Asian": 0.361,
-    "Black/Black British - Caribbean": 0.342,
-    "Mixed - Other": 0.328,
-    "Black/Black British - Other": 0.312,
-    "Mixed - White & Black Caribbean": 0.298,
-    "Mixed - White & Black African": 0.289
-}
-
-# Interracial/inter-ethnic marriage data
-INTERRACIAL_MARRIAGE_DATA = {
-    "same_ethnicity_marriages": 0.867,  # 86.7% marry same ethnicity
-    "interracial_marriages": 0.133,     # 13.3% marry different ethnicity
-    # Interracial rates by ethnicity
-    "interracial_rate_by_ethnicity": {
-        "Mixed - White & Black Caribbean": 0.87,
-        "Mixed - White & Black African": 0.85,
-        "Mixed - White & Asian": 0.84,
-        "Mixed - Other": 0.83,
-        "Black/Black British - Caribbean": 0.489,
-        "Arab": 0.387,
-        "Chinese": 0.365,
-        "Black/Black British - Other": 0.360,
-        "Asian/Asian British - Other": 0.342,
-        "Asian/Asian British - Chinese": 0.318,
-        "White Other": 0.156,
-        "Asian/Asian British - Indian": 0.143,
-        "White British": 0.112,
-        "Asian/Asian British - Pakistani": 0.078,
-        "Asian/Asian British - Bangladeshi": 0.063,
-    },
-    # Most common interracial pairings (% of all interracial marriages)
-    "common_pairings": {
-        "White British & White Other": 0.312,
-        "White British & Asian Indian": 0.118,
-        "White British & Black Caribbean": 0.094,
-        "White British & Pakistani": 0.062,
-        "White British & Black African": 0.058,
-        "White British & Chinese": 0.054,
-        "Other pairings": 0.302,
-    },
-}
+MIN_WAGE_ANNUAL = 24785  # National Living Wage 21+: £12.71/hr (April 2026 rate) * 37.5hrs/wk * 52wks, rounded
+MEDIAN_SALARY = 34963    # ONS ASHE 2023 median full-time salary
+AVERAGE_SALARY = 42200   # ONS ASHE 2023 mean full-time salary
 
 # Baby and children health statistics
 BABY_HEALTH_DATA = {

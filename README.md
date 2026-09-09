@@ -1,276 +1,196 @@
-# UK Dating Pool Calculator
-
-A Streamlit web application that calculates your realistic dating pool size using real UK government statistics from ONS (Office for National Statistics), NHS, HMRC, and other official sources.
-
-[![Live Demo](https://img.shields.io/badge/🚀%20Live%20Demo-Streamlit-FF4B4B?style=for-the-badge)](http://99.81.223.163:32768/)
-
-![Python](https://img.shields.io/badge/python-3.8+-blue.svg)
-![Streamlit](https://img.shields.io/badge/streamlit-1.28+-red.svg)
-![License](https://img.shields.io/badge/license-MIT-green.svg)
-
-## 🌐 Live Application
-
-**[Launch Calculator →](http://99.81.223.163:32768/)**
-
-## ✨ Key Features
-
-### Calculator Features
-- 🎯 **Real UK Statistics**: All data sourced from ONS, NHS, HMRC, and official UK government sources with hyperlinked references
-- 📊 **Comprehensive Filters**: 
-  - Age range selection (18-65+)
-  - Height preferences with metric & imperial (cm, feet/inches)
-  - Body type (BMI categories from NHS data)
-  - **Income levels** (£0 to £1M+ millionaires, includes self-employed & business owners from HMRC data)
-  - **Education** (minimum level + all above - e.g., "GCSE" includes A-Level, Undergraduate, Postgraduate)
-  - Multiple ethnicity selection (Census 2021)
-  - Sexual orientation compatibility
-  - Relationship status
-  - Children preferences
-  - Marriage history
-  - Male pattern baldness (age-adjusted prevalence)
-
-### 💍 Marriage & Relationship Statistics (Always Visible)
-**Explore comprehensive UK marriage data before or after using the calculator:**
-- 📈 Marriage trends (2013-2022) with COVID-19 impact analysis
-- 💔 Divorce statistics including no-fault reform (April 2022)
-- ⚖️ Who initiates divorce (63% women, 30% men, 6.9% joint)
-- 📋 Grounds for divorce (pre and post reform comparison)
-- 🎂 Marriage age demographics
-- 🔄 Remarriage statistics and success rates
-- 🗺️ Regional marriage variations across UK
-- 🌍 International comparisons
-- 💰 Income and education correlations with marriage
-- 👶 Children and family statistics
-- All sections collapsible for easy navigation
-
-### New Features (December 2025 Update)
-- 💍 **Always-Visible Marriage Stats**: Comprehensive marriage data accessible before calculator use
-- 💰 **Millionaire Income Bracket**: Now includes £1M+ earners with HMRC Self Assessment data
-- 🏢 **Business Owners Included**: High-income data accounts for self-employed, directors, dividend income
-- 🎓 **Smart Education Filter**: Select minimum level, automatically includes all higher qualifications (no more accidentally excluding degrees!)
-- 📏 **Dual Height Units**: Displays both cm and feet/inches (e.g., 175.3cm = 5'9")
-- 🔗 **Fully Sourced**: Every statistic has valid hyperlinks to official ONS, NHS, HMRC, WHO, and academic sources
-- 📅 **Data Freshness Info**: Know when ONS updates statistics (annual releases ~12-18 months after reference year)
-
-### Visualization & Analysis
-- 📈 **Interactive Breakdown**: Visual cascade showing how each filter narrows your dating pool
-- 🗺️ **Regional Distribution**: UK map showing geographic distribution of matches
-- 📊 **Probability Analysis**: Detailed breakdown of each filter's impact
-- 📊 **Probability Cascade**: Understand cumulative filtering effects
-
-### Documentation
-- 📚 **Full Source Citations**: Every statistic properly sourced and referenced
-- 🔍 **Methodology Explained**: Complete transparency on calculations
-- ⚠️ **Limitations Disclosed**: Honest about what the calculator can and cannot predict
-
-## 🏗️ Project Architecture
-
-This project features a **clean, modular architecture** for maintainability and scalability:
-
-```
-📦 UK dating statistic calculator/
-├── 📄 app.py                       # Main application entry (255 lines)
-├── 📄 data.py                      # All statistical data & constants
-├── 📄 calculations.py              # Probability calculation functions
-├── 📄 styles.py                    # CSS styling & UI themes
-├── 📄 ui_sidebar.py                # Sidebar input components
-├── 📄 ui_results.py                # Results display & tabs
-├── 📄 ui_marriage_stats_old.py     # Marriage statistics content
-├── 📄 ui_baby_stats_content.py     # Baby/fertility statistics
-├── 📄 map_visualization.py         # Geographic distribution maps
-├── 📄 requirements.txt             # Python dependencies
-└── 📄 nodal_coordinates.csv        # UK city coordinates for mapping
-```
-
-### Module Overview
-
-- **app.py**: Main orchestrator, page config, tab coordination
-- **data.py**: ONS data, NHS data, HMRC data, all statistical constants
-- **calculations.py**: Independent probability functions for each filter
-- **styles.py**: Custom CSS, color schemes, styling
-- **ui_sidebar.py**: All input widgets and user preferences
-- **ui_results.py**: Results visualization, breakdown tables, criteria display
-- **map_visualization.py**: Folium-based UK regional distribution maps
-
-📚 **Full documentation:** See [ARCHITECTURE.md](ARCHITECTURE.md), [MODULAR_STRUCTURE.md](MODULAR_STRUCTURE.md), and [QUICK_START.md](QUICK_START.md)
-
-## Installation
-
-### Prerequisites
-
-- Python 3.8 or higher
-- pip package manager
-
-### Setup
-
-1. Clone this repository:
-```bash
-git clone https://github.com/passportpowell/uk-dating-pool-calculator-streamlit.git
-cd uk-dating-pool-calculator-streamlit
-```
-
-2. Install required packages:
-```bash
-pip install -r requirements.txt
-```
-
-## Usage
-
-Run the Streamlit app:
-
-```bash
-streamlit run app.py
-```
-
-The app will open in your default web browser at `http://localhost:8501`
-
-## How It Works
-
-The calculator uses **independent probability multiplication** to estimate your dating pool:
-
-```
-P(match) = P(gender) × P(age) × P(height) × P(income) × P(education) × P(ethnicity) × P(single)
-```
-
-### Example Calculation
-
-If you're looking for:
-- **Gender**: Female (50% of population)
-- **Age**: 25-35 (18.7% of adults)
-- **Height**: 160-175cm (60% of females)
-- **Income**: £30k+ (45% of females)
-- **Education**: Degree or higher (41% of adults)
-- **Ethnicity**: Any (100%)
-- **Single**: Yes (35% of adults)
-
-**Result**: 0.50 × 0.187 × 0.60 × 0.45 × 0.41 × 1.0 × 0.35 = **0.362%** or ~190,000 people in the UK
-
-## Data Sources
-
-All statistics are based on official UK data:
-
-1. **Population Data**
-   - [ONS Mid-2022 Population Estimates](https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates)
-   - Total UK Adult Population: ~52.6 million
-
-2. **Ethnicity Distribution**
-   - [ONS Census 2021](https://www.ons.gov.uk/peoplepopulationandcommunity/culturalidentity/ethnicity)
-   - England and Wales ethnic groups
-
-3. **Height Distribution**
-   - [NHS Health Survey for England](https://digital.nhs.uk/data-and-information/publications/statistical/health-survey-for-england)
-   - Academic research on UK anthropometrics
-
-4. **Income Statistics**
-   - [ONS ASHE 2023](https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours)
-   - Annual Survey of Hours and Earnings
-
-5. **Education Levels**
-   - [ONS Education Statistics 2022](https://www.ons.gov.uk/peoplepopulationandcommunity/educationandchildcare)
-
-6. **Relationship Status**
-   - [ONS Families and Households 2022](https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/families)
-
-## Features Breakdown
-
-### Filters Available
-
-- **Gender Selection**: Male or Female
-- **Age Range**: 18-80 years (slider)
-- **Height Range**: 140-210cm with conversions to feet
-- **Minimum Income**: £0 to £100k+ brackets
-- **Education Levels**: Multi-select from 5 qualification levels
-- **Ethnicity**: Multi-select from 5 census categories
-- **Relationship Status**: Toggle for single/available only
-
-### Visual Features
-
-- Clean, modern UI with gradient result displays
-- Real-time probability breakdown table
-- Criteria summary panel
-- Reality check warnings based on selectivity
-- Expandable data sources section with full methodology
-
-## Important Notes
-
-### Assumptions
-- All criteria are treated as **independent** (some correlations exist in reality)
-- Geographic distribution is **uniform** (actual distribution varies by region)
-- Does not account for **mutual attraction** or **compatibility**
-
-### Limitations
-- Statistical model only - real dating success depends on many unquantifiable factors
-- Does not consider local dating markets or social circles
-- Some correlations between variables (e.g., education and income) are simplified
-- Attractiveness and personality are not included
-
-**Remember**: This is an educational tool. Your dating success isn't determined by statistics!
-
-## Technical Stack
-
-- **Streamlit**: Web framework
-- **Pandas**: Data manipulation
-- **NumPy**: Numerical calculations
-- **SciPy**: Statistical distributions (height calculations)
-
-## Screenshots
-
-### Main Interface
-Select your preferences in the sidebar and click "Calculate" to see your dating pool size.
-
-### Results Display
-- Large percentage display
-- Estimated number of matches
-- Detailed probability breakdown
-- Criteria summary
-
-### Data Sources
-Full transparency with expandable sources section including methodology and references.
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request. Areas for improvement:
-
-- Add regional breakdowns (London, Scotland, Wales, etc.)
-- Include more demographic factors
-- Add data visualization charts
-- Mobile responsive improvements
-- Additional statistics sources
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Disclaimer
-
-This calculator is for **educational and entertainment purposes only**. All statistics are based on official UK government data, but the model makes simplifying assumptions. Real-world dating success depends on countless factors beyond demographics, including personality, timing, compatibility, and individual circumstances.
-
-## Version History
-
-- **v2.0.0** (January 2026)
-  - ✨ **Major Refactoring**: Modular architecture (7 separate modules)
-  - 📂 Clean separation of concerns for maintainability
-  - 📚 Comprehensive documentation (ARCHITECTURE.md, MODULAR_STRUCTURE.md)
-  - 👶 Added Baby & Fertility Statistics tab
-  - 🗺️ Enhanced UK regional mapping
-  - 🔧 Improved code organization and testability
-
-- **v1.0.0** (December 2025)
-  - 🚀 Initial release
-  - 💍 Full UK ONS data integration
-  - 🔗 Multi-select ethnicity filter
-  - 📊 Comprehensive source citations
-  - 🎨 Interactive Streamlit interface
-  - 💰 Millionaire income bracket with HMRC data
-
-## Contact
-
-For questions, suggestions, or issues, please open an issue on GitHub.
-
-**Connect with me:**
-- GitHub: [@passportpowell](https://github.com/passportpowell)
-- LinkedIn: [Otis Powell](https://www.linkedin.com/in/otispowell/)
+<div align="center">
+
+# 🇬🇧 UK DATING STATISTIC CALCULATOR & EVIDENCE EXPLORER
+### *Empirical UK Dating Pool Modeling & Demographic Probability Engine*
+
+[![Node.js](https://img.shields.io/badge/Node.js-20+-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org/)
+[![ONS Data](https://img.shields.io/badge/Data-Official%20ONS%20Census%202021-blue?style=for-the-badge)](https://www.ons.gov.uk/)
+[![HMRC Data](https://img.shields.io/badge/Income-HMRC%20SPI%202024-green?style=for-the-badge)](https://www.gov.uk/government/organisations/hm-revenue-customs)
+[![Zero Dependency](https://img.shields.io/badge/V3%20Architecture-Zero%20NPM%20Dependencies-black?style=for-the-badge)](v3/)
+[![License](https://img.shields.io/badge/License-MIT-success?style=for-the-badge)](LICENSE)
+
+<p align="center">
+  <b>A rigorous demographic intelligence tool that models realistic dating pool sizes using official UK government data from the Office for National Statistics (ONS), NHS Health Survey for England, and HMRC.</b>
+</p>
+
+[Visual Tour](#-interface-showcase) • [Key Capabilities](#-dual-engine-architecture) • [Data Provenance](#-official-data-provenance--methodology) • [Quick Start](#-quick-start) • [Author](#-author)
 
 ---
 
-**Made with ❤️ using real UK data**
+</div>
+
+## 📸 Interface Showcase
+
+<div align="center">
+  <img src="v3/dating-desktop-qa.png" alt="UK Dating Pool Requirements Calculator Desktop" width="100%" />
+</div>
+
+<p align="center"><i>The V3 Requirements Calculator: Parametric modeling of adult demographics across UK geographies, age bands, qualification levels, income brackets, and marital status.</i></p>
+
+<div align="center">
+  <img src="v3/desktop-qa.png" alt="Evidence Explorer Desktop" width="48%" />
+  <img src="v3/sources-qa.png" alt="Official Data Sources QA" width="48%" />
+</div>
+
+<p align="center"><i>Left: Demographic Evidence Explorer with ONS cell references. Right: Primary source workbook validation and SHA-256 fingerprint verification.</i></p>
+
+---
+
+## 🏛️ Executive Overview
+
+The **UK Dating Statistic Calculator** eliminates dating market myths through cold, empirical demographic realities. Instead of relying on unverified internet dating tropes or commercial dating app algorithms, this platform constructs realistic pool probabilities derived directly from primary UK government statistical workbooks.
+
+### Core Architecture Highlights
+- **V3 Zero-Dependency Engine**: Built purely with native Vanilla ES Modules, semantic HTML5, and CSS3. Requires zero npm packages, zero external CDNs, and zero cloud API credentials.
+- **Joint Subgroup Probability**: Uses cross-tabulated Census 2021 microdata (`country × sex × age-band × qualification × ethnic-group`) to avoid naive independence assumptions.
+- **Dual-Engine Suite**:
+  1. **V3 Modern Web Atelier (`v3/`)**: Ultra-fast, zero-overhead client-side requirements calculator and demographic evidence explorer.
+  2. **Streamlit Analytical Dashboard (`app.py`)**: Legacy comprehensive Python data exploration suite with detailed marriage and divorce analytics.
+
+---
+
+## ✨ Dual-Engine Architecture
+
+| Feature Dimension | V3 Modern Edition (`v3/`) | Legacy Streamlit Edition (`app.py`) |
+|---|---|---|
+| **Primary Focus** | Client-side requirements calculator & demographic explorer | Python-based interactive statistical visualizer |
+| **Dependencies** | Zero runtime dependencies (Pure Node / Native JS) | Python 3, Streamlit, Pandas, Plotly |
+| **Data Verification** | Pinned ONS/HMRC workbooks with SHA-256 hashes | Official UK Government API & survey tables |
+| **Subgroup Math** | Exact joint probability conditioning: `P(ethnicity \| qual, country, sex, age)` | Multiplicative demographic filters with age weighting |
+| **Data Integrity** | Cell-level citations, confidence intervals, no invented values | Extensive marriage, divorce, and regional breakdown tabs |
+
+---
+
+## 📊 Filter Dimensions & Statistical Bounds
+
+The calculator enables precise parametric filtering across verified UK adult distributions:
+
+- **Geography**: United Kingdom, England, Wales, Scotland, Northern Ireland, and specific English regions.
+- **Age Span**: Granular single-year and multi-year cohorts from 18 to 65+ (based on ONS mid-2024 population estimates).
+- **Height (Gaussian Model)**: Centimeter and imperial (feet/inches) inputs mapped against NHS Health Survey for England mean/SD curves.
+- **Income (HMRC SPI)**: True UK income distribution including £100k+, £250k+, and £1M+ earners incorporating self-employed, dividend, and property income.
+- **Education**: Regulated Qualifications Framework (RQF) Levels: GCSE, A-Level, Degree (Level 4+), and Postgraduate.
+- **Relationship Status**: ONS 2025 living arrangements (Single never-married, Cohabiting, Married, Divorced/Separated, Widowed).
+- **Sexual Orientation**: ONS 2024 Table 6b age-and-sex percentages with explicit confidence bounds.
+
+---
+
+## 🏗️ System Architecture
+
+```mermaid
+flowchart TD
+    subgraph Sources ["Official Government Sources"]
+        ONS_Pop["ONS Mid-2024 Population (mye24tablesuk.xlsx)"]
+        ONS_Census["Census 2021 Joint API (joint-census-api.json)"]
+        HMRC_SPI["HMRC Survey of Personal Incomes (SPI 2023/24)"]
+        NHS_HSE["NHS Health Survey for England (HSE 2024)"]
+    end
+
+    subgraph Extractors ["Python Extraction & Hashing"]
+        FilterExtract["extract_filters.py"]
+        SubgroupExtract["extract_subgroups.py"]
+        EvidenceJSON[("data/evidence.json (SHA-256 Signed)")]
+    end
+
+    subgraph Engines ["Serving & Calculation Runtime"]
+        NodeServer["server.mjs (Zero-Dependency Local Server)"]
+        DatingModel["dating-model.mjs (Joint Subgroup Math)"]
+        ClientUI["calculator.html & style.css"]
+    end
+
+    ONS_Pop --> FilterExtract
+    ONS_Census --> SubgroupExtract
+    HMRC_SPI --> FilterExtract
+    NHS_HSE --> FilterExtract
+    FilterExtract --> EvidenceJSON
+    SubgroupExtract --> EvidenceJSON
+    EvidenceJSON --> DatingModel
+    NodeServer --> ClientUI
+    DatingModel --> ClientUI
+```
+
+---
+
+## 📁 Repository Structure
+
+```text
+UK dating statistic calculator/
+├── v3/                                 # [Recommended] Modern zero-dependency edition
+│   ├── calculator.html                 # Requirements calculator interface
+│   ├── index.html                      # Secondary demographic evidence explorer
+│   ├── app.mjs                         # Application orchestration & tab controls
+│   ├── dating-model.mjs                # Joint demographic probability math engine
+│   ├── dating.mjs                      # Dynamic UI rendering & scenario comparisons
+│   ├── server.mjs                      # Lightweight local Node.js server
+│   ├── style.css & dating.css          # Modern dark/light luxury CSS design system
+│   ├── data/                           # Extracted demographic JSON tables
+│   ├── sources/                        # Retained original ONS/HMRC Excel workbooks
+│   ├── scripts/                        # Reproducible Python extractors
+│   ├── tests/                          # Node test suite & browser QA scripts
+│   ├── dating-desktop-qa.png           # High-resolution calculator screenshot
+│   ├── desktop-qa.png                  # Evidence explorer screenshot
+│   ├── sources-qa.png                  # Data provenance proof screenshot
+│   └── AUDIT.md                        # Comprehensive methodological audit
+├── app.py                              # Legacy Streamlit entry point
+├── calculations.py                     # Legacy demographic calculation math
+├── data.py                             # Legacy data tables & static arrays
+├── ui_marriage_stats_content.py        # UK marriage & divorce analytics
+├── requirements.txt                    # Streamlit Python dependencies
+└── README.md                           # Master repository documentation
+```
+
+---
+
+## 🚀 Quick Start
+
+### Launching the Modern V3 Edition (Recommended)
+
+Requires **Node.js 20+**:
+
+```powershell
+# Navigate to v3
+cd "v3"
+
+# Start server on an OS-assigned random port
+npm start
+```
+
+*The server will print its active localhost address (e.g. `http://127.0.0.1:49215`). Open this URL in any modern browser.*
+
+To execute automated unit and integration tests:
+```powershell
+npm test
+```
+
+### Launching the Legacy Streamlit App
+
+Requires **Python 3.10+**:
+
+```bash
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Launch Streamlit server
+streamlit run app.py
+```
+
+---
+
+## 📜 Official Data Provenance & Methodology
+
+Every metric displayed by this application traces back to an official government publication:
+- **ONS Population Estimates**: Pinpoint mid-2024 UK counts released 26 September 2025.
+- **ONS Living Arrangements**: Table 1–6 living arrangement and legal marital status releases (July 2026).
+- **HMRC Survey of Personal Incomes**: 2023/24 percentiles covering both PAYE employee earnings and self-assessment entrepreneurs.
+- **NHS Health Survey for England (HSE)**: Physical biometric data (height distributions and BMI classifications).
+
+---
+
+## 👤 Author & Brand Profile
+
+**Otis Powell** ([@passportpowell](https://github.com/passportpowell))  
+- 🌐 GitHub: [github.com/passportpowell](https://github.com/passportpowell)
+- 📺 YouTube: [@PassportPowell](https://www.youtube.com/@PassportPowell)
+- 💼 LinkedIn: [in/otispowell](https://www.linkedin.com/in/otispowell/)
+- 𝕏 Twitter: [@PassportPowell](https://x.com/PassportPowell)

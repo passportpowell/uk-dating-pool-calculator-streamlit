@@ -25,7 +25,7 @@ from data import UK_ADULT_POPULATION
 from styles import CUSTOM_CSS
 from ui_sidebar import create_sidebar
 from ui_results import display_results, display_probability_breakdown_tab, display_criteria_tab, display_map_tab
-from ui_marriage_stats_old import display_marriage_statistics_tab
+from ui_marriage_stats import display_marriage_statistics_tab
 from ui_baby_stats_content import display_baby_statistics_tab
 from calculations import (
     calculate_age_probability,
@@ -39,11 +39,6 @@ from calculations import (
     calculate_marriage_probability,
     calculate_baldness_probability
 )
-
-# Import the marriage statistics tab from original file
-# (To fully modularize, move this to a separate ui_marriage_stats.py file)
-import sys
-sys.path.insert(0, 'e:\\OneDrive\\Github\\UK dating statistic calculator')
 
 
 # Page configuration
@@ -157,7 +152,8 @@ def main():
                 inputs['acceptable_marriage_history'],
                 inputs['user_gender'],
                 inputs['looking_for'],
-                inputs['user_orientation']
+                inputs['user_orientation'],
+                inputs['must_be_single']
             )
             
             # Baldness probability (only applies to males)
@@ -244,6 +240,11 @@ def main():
         
         This calculator uses **independent probability multiplication** to estimate your dating pool size.
         Each criterion acts as a filter that narrows down the population.
+        
+        > ⚠️ **Statistical Correlation Warning**: Treating all filters as independent events is a statistical simplification. 
+        > In reality, traits like **Age, Income, and Education** are highly correlated. For example, peak earners are 
+        > concentrated in the 35–54 age bracket. Selecting very selective criteria across correlated fields 
+        > (e.g., age 18-24 + income >£75k) will result in a dating pool size estimate that is larger than the actual population.
         
         For detailed methodology, assumptions, and limitations, please refer to the
         comprehensive documentation in app_original_full.py (lines 3270-3390).

@@ -145,7 +145,7 @@ def calculate_children_probability(acceptable_children):
     return probability
 
 
-def calculate_marriage_probability(acceptable_marriage_history, user_gender, looking_for_gender, user_orientation):
+def calculate_marriage_probability(acceptable_marriage_history, user_gender, looking_for_gender, user_orientation, must_be_single=False):
     """Calculate probability someone has acceptable marriage history
     
     Args:
@@ -153,6 +153,7 @@ def calculate_marriage_probability(acceptable_marriage_history, user_gender, loo
         user_gender: Gender of the user ("Male" or "Female")
         looking_for_gender: Gender being sought ("Male", "Female", or "Any")
         user_orientation: Sexual orientation of user
+        must_be_single: Whether matches must be single
     
     Returns:
         Probability (0-1) that someone matches the marriage criteria
@@ -169,13 +170,26 @@ def calculate_marriage_probability(acceptable_marriage_history, user_gender, loo
            (user_gender == "Female" and looking_for_gender == "Female"):
             orientation_key = "same-sex"
         elif looking_for_gender == "Any":
-            prob_opposite = sum(MARRIAGE_HISTORY["opposite-sex"][status] for status in acceptable_marriage_history)
-            prob_same = sum(MARRIAGE_HISTORY["same-sex"][status] for status in acceptable_marriage_history)
+            if must_be_single:
+                total_unmarried_opposite = sum(MARRIAGE_HISTORY["opposite-sex"][s] for s in ["Never married", "Divorced", "Widowed"])
+                total_unmarried_same = sum(MARRIAGE_HISTORY["same-sex"][s] for s in ["Never married", "Divorced", "Widowed"])
+                
+                prob_opposite = sum(MARRIAGE_HISTORY["opposite-sex"][s] for s in acceptable_marriage_history if s != "Currently married") / total_unmarried_opposite
+                prob_same = sum(MARRIAGE_HISTORY["same-sex"][s] for s in acceptable_marriage_history if s != "Currently married") / total_unmarried_same
+            else:
+                prob_opposite = sum(MARRIAGE_HISTORY["opposite-sex"][status] for status in acceptable_marriage_history)
+                prob_same = sum(MARRIAGE_HISTORY["same-sex"][status] for status in acceptable_marriage_history)
             return (prob_opposite + prob_same) / 2
     
     probability = 0
-    for status in acceptable_marriage_history:
-        probability += MARRIAGE_HISTORY[orientation_key][status]
+    if must_be_single:
+        total_unmarried = sum(MARRIAGE_HISTORY[orientation_key][s] for s in ["Never married", "Divorced", "Widowed"])
+        if total_unmarried > 0:
+            probability = sum(MARRIAGE_HISTORY[orientation_key][status] for status in acceptable_marriage_history if status != "Currently married") / total_unmarried
+    else:
+        for status in acceptable_marriage_history:
+            probability += MARRIAGE_HISTORY[orientation_key][status]
+            
     return probability
 
 

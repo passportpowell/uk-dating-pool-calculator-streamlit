@@ -339,6 +339,29 @@ Verification:
 - Mobile Playwright checks at 390x844 and 430x932 passed for both `/` and `/methodology`: no horizontal overflow, calculator H1 present, Methodology link visible, age/height number inputs visible after opening height controls, target denominator text present, methodology page back link present, 7 official source links present, and Known Caveats present.
 - Desktop stability check at 1280x900 confirmed filter panel x/y/width remained unchanged after a result recalculation (`400px` wide before and after).
 
+## 2026-07-07T23:12:34+01:00 - codex
+
+Pushed the Next/React app to GitHub and deployed it on Vercel production.
+
+GitHub:
+- Remote: `https://github.com/passportpowell/uk-dating-pool-calculator-streamlit.git`
+- Branch pushed: `main`
+- Commits pushed:
+  - `8416a9b Add Next dating pool calculator`
+  - `5238c01 Add calculator library files`
+- Note: remote `main` had been force-reset to a short two-commit history, so I used a clean temporary worktree based on `origin/main`, cherry-picked the Next app commit onto it, resolved the `.gitignore` conflict, and pushed fast-forward. I did not force-push.
+- The first commit missed `temp-next-app/src/lib/*` because the older local root `.gitignore` had a broad `lib/` rule. Vercel caught this during build (`Module not found: Can't resolve '@/lib/data'`). I added the missing `src/lib` files plus `temp-next-app/.gitignore` and pushed `5238c01`.
+
+Vercel:
+- Project/account shown by CLI: `otisofro-3725s-projects/temp-next-app`
+- Production alias: `https://temp-next-app-snowy.vercel.app`
+- Latest deployment URL shown by CLI: `https://temp-next-2fbpbadez-otisofro-3725s-projects.vercel.app`
+- Vercel build passed with Next.js `16.2.10`; generated static routes `/`, `/_not-found`, and `/methodology`.
+- Live check passed for the public alias:
+  - `https://temp-next-app-snowy.vercel.app/` returned HTTP 200 with title `UK Dating Pool Calculator`.
+  - `https://temp-next-app-snowy.vercel.app/methodology` returned HTTP 200 with title `UK Dating Pool Calculator`.
+- The raw deployment URL returned a Vercel login page in `Invoke-WebRequest`, so the public handoff URL should be the alias above.
+
 ## 2026-07-07T22:40:00+01:00 - gemini
 
 Audited Codex's work and changes:
@@ -352,3 +375,26 @@ Audited Codex's work and changes:
 3. **Verdict**:
    - Codex's implementation represents a substantial step forward in statistical accuracy and layout quality. No errors or conflicts found. Tests compile, verify, and run successfully.
 
+## 2026-09-09 - Codex - V3 evidence explorer, local only
+
+Created `v3/` with a new responsive interface, direct ONS population/living-arrangement/legal-status calculations, explicit denominators, three-scenario comparison, source-cell tables, reliability flags, selection links and JSON exports. Retained original ONS XLSX files, SHA-256 fingerprints and a reproducible extractor. Population uses the pinned mid-2024 edition; relationships use 2025 columns from the release dated 31 July 2026. These datasets are kept separate. Unsupported legacy probability filters and unverified medical content are excluded from V3; original Python files and pre-existing Next.js deletions are preserved. Root README now identifies the active V3 entry point and marks its old content as historical.
+
+Validation: nine model/source tests passed; Chromium interaction, comparison, export, suppression, invalid input, keyboard tabs, shared URL reload, failed-dataset behaviour and 390/430/768px overflow checks passed. Desktop/mobile screenshots inspected. Local HTTP root and health checks passed. Server binds to 127.0.0.1:49215, PID 10144, freshly launched for this work. URL: http://127.0.0.1:49215/ . No deployment or Git commit/push performed. Review: `v3/AUDIT.md`; run instructions: `v3/README.md`.
+
+## 2026-09-09 - Codex - Restore requirements-based dating calculator
+
+User clarified that the core task is a requirements-based dating calculator, not only demographic exploration. Restored that workflow as the default route in V3.1; the evidence explorer remains at `/index.html`. Added sex/location/age, relationship, income, orientation, opt-in height, age/sex BMI, Level 4+ qualification and broad-ethnicity filters; pool count, target-denominator percentage, 1-in-N, explicitly hypothetical encounter probability, breakdown, relaxed-filter comparisons, saved scenarios and provenance exports. Original NHS HSE 2024 XLSX and HMRC SPI 2023/24 ODS downloaded and retained; extractor and hashes included. Source-backed marginal inputs are distinct from model assumptions. Height spread is adjustable and explicitly unsourced; combined overlaps, geographic proxies and denominator mismatches are disclosed, not represented as official counts or personal dating odds.
+
+18 tests passed across both engines. New calculator Chromium QA passed for controls, comparisons, exports, share/reload, invalid ages, mobile overflow and explorer navigation. Desktop screenshot inspected. Same preview URL http://127.0.0.1:49215/ now serves the calculator; server PID 5088, health version 3.1.0. No deployment or Git push.
+
+
+### 2026-09-09 — V3.2 filter clarity and qualification evidence
+Reproduced supplied scenario: prior model count 43.3661, 0.0001628723 percent, one in 613977.9. Arithmetic is consistent but joint overlap is unverified. Made all preferences visible, shortened labels, grouped the form, added selected-filter chips and prominent uncertainty. Added Census 2021 Figure 2 qualification counts and minimum-level choices; apprenticeship levels remain unclassified. Retained source workbook and extraction fingerprint. All 19 model tests and dating desktop/mobile browser checks passed. Fresh local preview http://127.0.0.1:49634 (PID 28048); no deployment.
+
+
+### 2026-09-09 — Requirement effects and dedicated source library
+Clarified denominator as all selected-sex adults in chosen location. Removed encounter panel. Added nine-stage evidence breakdown with before/after effects and source/cell links. Added dedicated sources.html covering all seven datasets and children evidence gap. Added married, cohabiting and married-or-cohabiting union options; tested no double counting and explicit suppressed denominator handling. Children/co-parent controls disabled pending suitable data; ONS 2024 fertility release reviewed. Twelve dating tests plus nine existing explorer tests passed; browser navigation and mobile checks passed. Preview http://127.0.0.1:60815, PID30304. No deployment.
+
+
+### 2026-09-09 — V3.3 observed subgroup combinations
+Added retained ONS Census observations crossing country, sex, age, qualification and ethnicity (2,112 total observations; 1,120 adult relevant cells). Qualification and conditional ethnicity factors reproduce the observed joint proportion. England/Wales use country-specific rates, other locations retain explicit proxies. Orientation now uses 2024 Table 6b age-sex rates with source cells, CV and CI retained. No invented income adjustment or interval. Original scenario estimate 65.877659 people, 0.000247419874 percent of 26,625,856 UK adult men. Updated source library, breakdown, extraction pipeline and README. 24 model tests and dating browser checks passed. Local V3.3 preview http://127.0.0.1:56203, PID35328. No deployment.
