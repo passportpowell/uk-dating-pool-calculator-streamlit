@@ -36,7 +36,7 @@ Each result shows its sources, denominators, assumptions and limitations. Read t
 
 The repository retains an earlier Python/Streamlit analysis in `app.py`. It is a separate legacy implementation and should not be assumed to use the same calculations or evidence as V3.
 
-No repository license file is present. Do not infer a reuse license from a README badge or from the public availability of the source data.
+The repository's code is available under the [MIT License](LICENSE), copyright 2026 Otis Powell. Upstream datasets and workbooks retain their own licensing and attribution requirements; the code license does not grant additional rights to those sources.
 
 ## Author
 
