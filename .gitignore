@@ -56,7 +56,7 @@ Thumbs.db
 * - COPY.*  
 
 # Archived legacy files
-archive/
+/archive/
 scratch/
 .env.*
 !.env.example

@@ -9,7 +9,8 @@ Destination: resolve supported audit findings, verify the source-backed calculat
 - [x] Repair visible inputs,relationship choices,height units,sharing,export/comparisons and exact relaxations.
 - [x] Verify36 tests,seven hashes,types,lint,build and browser flows locally.
 - [x] Independent same-family review; concrete findings fixed.
-- [~] Final checks,explicit Git snapshot,remote history integration and verified push.
+- [x] Final checks,explicit Git snapshot,remote history integration and GitHub push (389f281).
+- [ ] Reconcile canonical NAS Git metadata once stalled filesystem operations recover. Publication used a temporary local clone.
 
 Evidence limits: separate Ipsos age/sex marginals; no full parenthood/co-parent accounting. Income uses national sex-specific taxable-income approximations. Wider geographic rates remain disclosed proxies. No measured full joint count or statistical confidence interval.
 

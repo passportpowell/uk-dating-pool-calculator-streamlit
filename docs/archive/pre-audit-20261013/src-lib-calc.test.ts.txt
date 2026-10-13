@@ -1,0 +1,481 @@
+import { describe, it } from "node:test";
+import assert from "node:assert/strict";
+import {
+  AGE_DISTRIBUTION,
+  BODY_TYPE_DISTRIBUTION_FEMALE,
+  BODY_TYPE_DISTRIBUTION_MALE,
+  CHILDREN_DISTRIBUTION,
+  EDUCATION_DISTRIBUTION,
+  EDUCATION_DISTRIBUTION_BY_AGE,
+  ETHNICITY_DISTRIBUTION,
+  INCOME_DISTRIBUTION_BY_AGE_FEMALE,
+  INCOME_DISTRIBUTION_BY_AGE_MALE,
+  INCOME_DISTRIBUTION_FEMALE,
+  INCOME_DISTRIBUTION_MALE,
+  MARRIAGE_HISTORY,
+  MARRIAGE_STATISTICS_DATA,
+  FERTILITY_AND_BIRTH_DATA,
+  SEXUAL_ORIENTATION_DISTRIBUTION,
+  GENDER_SPLIT,
+  UK_ADULT_POPULATION,
+  UK_REGIONS,
+  type Distribution,
+} from "./data";
+import {
+  ageProbability,
+  calculateConfidenceInterval,
+  calculateDatingPool,
+  calculateRegionalPool,
+  educationProbability,
+  getEducationDistributionForAge,
+  getIncomeDistributionForAge,
+  incomeProbability,
+  marriageProbability,
+  normalCdf,
+  type CalculatorInput,
+} from "./calc";
+
+function expect(actual: any) {
+  return {
+    toBeCloseTo: (expected: number, precision: number = 2) => {
+      const tolerance = Math.pow(10, -precision) * 1.000001;
+      assert.ok(
+        Math.abs(actual - expected) <= tolerance,
+        `Expected ${actual} to be close to ${expected} with precision ${precision}`
+      );
+    },
+    toBe: (expected: any) => assert.strictEqual(actual, expected),
+    toBeGreaterThan: (expected: number) => assert.ok(actual > expected, `Expected ${actual} > ${expected}`),
+    toBeLessThan: (expected: number) => assert.ok(actual < expected, `Expected ${actual} < ${expected}`),
+    toBeGreaterThanOrEqual: (expected: number) => assert.ok(actual >= expected, `Expected ${actual} >= ${expected}`),
+    toBeLessThanOrEqual: (expected: number) => assert.ok(actual <= expected, `Expected ${actual} <= ${expected}`),
+    not: {
+      toBeNull: () => assert.notStrictEqual(actual, null),
+      toBe: (expected: any) => assert.notStrictEqual(actual, expected),
+    },
+  };
+}
+
+const sum = (d: Distribution) => Object.values(d).reduce((a, b) => a + b, 0);
+
+describe("distributions sum to 1.0", () => {
+  const cases: Array<[string, Distribution]> = [
+    ["age", AGE_DISTRIBUTION.value],
+    ["ethnicity", ETHNICITY_DISTRIBUTION.value],
+    ["income male", INCOME_DISTRIBUTION_MALE.value],
+    ["income female", INCOME_DISTRIBUTION_FEMALE.value],
+    ["education", EDUCATION_DISTRIBUTION.value],
+    ["body male", BODY_TYPE_DISTRIBUTION_MALE.value],
+    ["body female", BODY_TYPE_DISTRIBUTION_FEMALE.value],
+    ["children", CHILDREN_DISTRIBUTION.value],
+    ["marriage opposite-sex", MARRIAGE_HISTORY.value["opposite-sex"]],
+    ["marriage same-sex", MARRIAGE_HISTORY.value["same-sex"]],
+  ];
+
+  for (const [name, dist] of cases) {
+    it(name, () => {
+      expect(sum(dist)).toBeCloseTo(1.0, 6);
+    });
+  }
+
+  it("orientation distribution sums to 1.0", () => {
+    expect(sum(SEXUAL_ORIENTATION_DISTRIBUTION.value)).toBeCloseTo(1.0, 6);
+  });
+});
+
+describe("normal CDF", () => {
+  it("is 0.5 at the mean", () => {
+    expect(normalCdf(175.3, 175.3, 7.1)).toBeCloseTo(0.5, 4);
+  });
+  it("covers ~full mass over a wide range", () => {
+    expect(normalCdf(210, 175.3, 7.1) - normalCdf(140, 175.3, 7.1)).toBeCloseTo(1.0, 3);
+  });
+});
+
+describe("filter probabilities are valid", () => {
+  it("age over full adult range ≈ 1.0", () => {
+    expect(ageProbability(18, 99)).toBeCloseTo(1.0, 6);
+  });
+  it("age 35-41 uses exact ONS single-year shares", () => {
+    expect(ageProbability(35, 41)).toBeCloseTo(0.11979559, 6);
+  });
+  it("income at £0 minimum = everyone", () => {
+    expect(incomeProbability(0, "Male")).toBeCloseTo(1.0, 6);
+    expect(incomeProbability(0, "Female")).toBeCloseTo(1.0, 6);
+  });
+  it("education 'Any' = 1.0 and degree+ ≈ 0.338 (Census-corrected)", () => {
+    expect(educationProbability("Any")).toBe(1.0);
+    expect(educationProbability("Undergraduate degree")).toBeCloseTo(0.338, 3);
+  });
+});
+
+describe("availability double-count is fixed", () => {
+  it("mustBeSingle renormalises marriage history over unmarried people", () => {
+    // Default acceptable when single = never/divorced/widowed => the whole unmarried pool => 1.0
+    const p = marriageProbability(
+      ["Never married", "Divorced", "Widowed"],
+      "Male",
+      "Female",
+      "Heterosexual/Straight",
+      true,
+    );
+    expect(p).toBeCloseTo(1.0, 6);
+  });
+});
+
+describe("README worked example reproduces", () => {
+  it("female / 25-35 / any-height / 30k+ / degree+ / single ≈ prior ~0.37%", () => {
+    const input: CalculatorInput = {
+      userGender: "Male",
+      orientation: "Heterosexual/Straight",
+      lookingFor: "Female",
+      ageRange: [25, 35],
+      minHeightCm: 140,
+      maxHeightCm: 210,
+      minIncome: 30000,
+      educationLevel: "Undergraduate degree",
+      selectedEthnicities: Object.keys(ETHNICITY_DISTRIBUTION.value),
+      selectedBodyTypes: Object.keys(BODY_TYPE_DISTRIBUTION_FEMALE.value),
+      mustBeSingle: true,
+      acceptableChildren: Object.keys(CHILDREN_DISTRIBUTION.value),
+      acceptableMarriage: ["Never married", "Divorced", "Widowed"],
+      baldnessPreference: "Any",
+    };
+    const r = calculateDatingPool(input);
+    expect(r.percentage).toBeGreaterThan(0.2);
+    expect(r.percentage).toBeLessThan(0.75);
+    expect(r.estimatedMatches).toBeGreaterThan(0);
+  });
+});
+
+describe("every step probability is a valid probability", () => {
+  it("all steps in [0,1]", () => {
+    const input: CalculatorInput = {
+      userGender: "Female",
+      orientation: "Heterosexual/Straight",
+      lookingFor: "Male",
+      ageRange: [25, 40],
+      minHeightCm: 170,
+      maxHeightCm: 195,
+      minIncome: 34963,
+      educationLevel: "A-Level or equivalent",
+      selectedEthnicities: Object.keys(ETHNICITY_DISTRIBUTION.value),
+      selectedBodyTypes: Object.keys(BODY_TYPE_DISTRIBUTION_MALE.value),
+      mustBeSingle: true,
+      acceptableChildren: Object.keys(CHILDREN_DISTRIBUTION.value),
+      acceptableMarriage: ["Never married", "Divorced", "Widowed"],
+      baldnessPreference: "Not bald",
+    };
+    const r = calculateDatingPool(input);
+    for (const step of r.steps) {
+      expect(step.probability).toBeGreaterThanOrEqual(0);
+      expect(step.probability).toBeLessThanOrEqual(1.0000001);
+    }
+    expect(r.totalProbability).toBeGreaterThanOrEqual(0);
+    expect(r.totalProbability).toBeLessThanOrEqual(1);
+  });
+});
+
+describe("target denominator metadata", () => {
+  it("reports percentages against the selected target gender pool", () => {
+    const input: CalculatorInput = {
+      userGender: "Female",
+      orientation: "Heterosexual/Straight",
+      lookingFor: "Male",
+      ageRange: [35, 41],
+      minHeightCm: 181,
+      maxHeightCm: 210,
+      minIncome: 75000,
+      educationLevel: "Any",
+      selectedEthnicities: Object.keys(ETHNICITY_DISTRIBUTION.value),
+      selectedBodyTypes: Object.keys(BODY_TYPE_DISTRIBUTION_MALE.value),
+      mustBeSingle: true,
+      acceptableChildren: Object.keys(CHILDREN_DISTRIBUTION.value),
+      acceptableMarriage: ["Never married", "Divorced", "Widowed", "Currently married"],
+      baldnessPreference: "Any",
+    };
+    const r = calculateDatingPool(input);
+    expect(r.basePopulation).toBe(Math.round(UK_ADULT_POPULATION * GENDER_SPLIT.male));
+    expect(r.baseLabel).toBe("UK adult men aged 18+");
+    expect(r.targetPercentage).toBeCloseTo(r.percentage / GENDER_SPLIT.male, 6);
+    expect(r.oneInTargetPool).toBeCloseTo(100 / r.targetPercentage, 2);
+    expect(r.selectivityTier.label).toBe("Ultra-Selective (<0.1%)");
+    expect(r.emptyFilters.length).toBe(0);
+  });
+});
+
+describe("regional pool breakdown & reconciliation", () => {
+  it("returns 12 ranked UK regions whose scaled matches reconcile to national total", () => {
+    const p = 0.01;
+    const regions = calculateRegionalPool(p);
+    expect(regions.length).toBe(Object.keys(UK_REGIONS).length);
+    expect(regions[0].rank).toBe(1);
+    expect(regions[0].region).toBe("South East");
+    expect(regions[1].region).toBe("London");
+
+    const totalShare = regions.reduce((acc, r) => acc + r.shareOfUkMatches, 0);
+    expect(totalShare).toBeCloseTo(1.0, 6);
+
+    const sumRegionalMatches = regions.reduce((acc, r) => acc + r.estimatedMatches, 0);
+    const nationalExpected = Math.round(UK_ADULT_POPULATION * p);
+    // Rounding across 12 regions can differ by at most 6 people
+    assert.ok(Math.abs(sumRegionalMatches - nationalExpected) <= 12);
+  });
+});
+
+describe("empty filter diagnostics", () => {
+  it("flags empty multi-select filters and reports Zero Pool selectivity tier", () => {
+    const input: CalculatorInput = {
+      userGender: "Male",
+      orientation: "Heterosexual/Straight",
+      lookingFor: "Female",
+      ageRange: [25, 35],
+      minHeightCm: 140,
+      maxHeightCm: 210,
+      minIncome: 0,
+      educationLevel: "Any",
+      selectedEthnicities: [],
+      selectedBodyTypes: Object.keys(BODY_TYPE_DISTRIBUTION_FEMALE.value),
+      mustBeSingle: true,
+      acceptableChildren: Object.keys(CHILDREN_DISTRIBUTION.value),
+      acceptableMarriage: ["Never married"],
+      baldnessPreference: "Any",
+    };
+    const r = calculateDatingPool(input);
+    expect(r.estimatedMatches).toBe(0);
+    expect(r.oneInTargetPool).toBe(null);
+    expect(r.emptyFilters.includes("Preferred Ethnicity")).toBe(true);
+    expect(r.selectivityTier.label).toBe("Zero Pool (Empty Filter)");
+  });
+});
+
+describe("reference marriage and fertility datasets", () => {
+  it("uses ONS-verified 2022 marriage counts (246,897 = 239,097 + 7,800) and normalized pairings", () => {
+    const m = MARRIAGE_STATISTICS_DATA.value;
+    expect(m.annual2022.totalMarriages).toBe(246_897);
+    expect(m.annual2022.oppositeSexMarriages + m.annual2022.sameSexMarriages).toBe(m.annual2022.totalMarriages);
+    expect(m.annual2022.sameSexMale + m.annual2022.sameSexFemale).toBe(m.annual2022.sameSexMarriages);
+    expect(sum(m.interEthnicMarriage.commonPairings)).toBeCloseTo(1.0, 6);
+    expect(
+      m.interEthnicMarriage.overall.sameEthnicity + m.interEthnicMarriage.overall.differentEthnicity,
+    ).toBeCloseTo(1.0, 6);
+  });
+
+  it("includes 5 maternal age bands and 6 historical parental age trend points", () => {
+    const f = FERTILITY_AND_BIRTH_DATA.value;
+    expect(f.outcomesByMaternalAge.length).toBe(5);
+    expect(f.parentalAgeTrends.length).toBe(6);
+    expect(f.nationalBenchmarks.stillbirthPer1000).toBeGreaterThan(0);
+  });
+});
+
+describe("bottleneck analysis & correlation adjustment", () => {
+  it("identifies income as tightest bottleneck when high threshold is selected", () => {
+    const res = calculateDatingPool({
+      userGender: "Male",
+      orientation: "Heterosexual/Straight",
+      lookingFor: "Female",
+      ageRange: [25, 35],
+      minHeightCm: 140,
+      maxHeightCm: 210,
+      minIncome: 100000,
+      educationLevel: "Any",
+      selectedEthnicities: Object.keys(ETHNICITY_DISTRIBUTION.value),
+      selectedBodyTypes: Object.keys(BODY_TYPE_DISTRIBUTION_FEMALE.value),
+      mustBeSingle: false,
+      acceptableChildren: Object.keys(CHILDREN_DISTRIBUTION.value),
+      acceptableMarriage: ["Never married", "Divorced", "Widowed", "Currently married"],
+      baldnessPreference: "Any",
+    });
+
+    expect(res.bottleneck).not.toBeNull();
+    expect(res.bottleneck?.criterion).toBe("Income");
+    expect(res.bottleneck?.eliminatedPct).toBeGreaterThan(90);
+  });
+
+  it("applies positive correlation boost when high income and degree are both requested", () => {
+    const baseInput = {
+      userGender: "Female" as const,
+      orientation: "Heterosexual/Straight" as const,
+      lookingFor: "Male" as const,
+      ageRange: [25, 45] as [number, number],
+      minHeightCm: 140,
+      maxHeightCm: 210,
+      minIncome: 75000,
+      educationLevel: "Undergraduate degree (Level 6)",
+      selectedEthnicities: Object.keys(ETHNICITY_DISTRIBUTION.value),
+      selectedBodyTypes: Object.keys(BODY_TYPE_DISTRIBUTION_MALE.value),
+      mustBeSingle: true,
+      acceptableChildren: Object.keys(CHILDREN_DISTRIBUTION.value),
+      acceptableMarriage: ["Never married", "Divorced", "Widowed"],
+      baldnessPreference: "Any" as const,
+    };
+
+    const withoutCorr = calculateDatingPool({ ...baseInput, correlationAdjustment: false });
+    const withCorr = calculateDatingPool({ ...baseInput, correlationAdjustment: true });
+
+    expect(withCorr.correlationDiscount).toBeGreaterThan(1.0);
+    expect(withCorr.estimatedMatches).toBeGreaterThan(withoutCorr.estimatedMatches);
+    expect(withCorr.targetPercentage).toBeGreaterThan(withoutCorr.targetPercentage);
+  });
+});
+
+describe("regional scoping options", () => {
+  const baseInput = {
+    userGender: "Male" as const,
+    orientation: "Heterosexual/Straight" as const,
+    lookingFor: "Female" as const,
+    ageRange: [25, 35] as [number, number],
+    minHeightCm: 150,
+    maxHeightCm: 180,
+    minIncome: 25000,
+    educationLevel: "Any",
+    selectedEthnicities: Object.keys(ETHNICITY_DISTRIBUTION.value),
+    selectedBodyTypes: Object.keys(BODY_TYPE_DISTRIBUTION_FEMALE.value),
+    mustBeSingle: true,
+    acceptableChildren: Object.keys(CHILDREN_DISTRIBUTION.value),
+    acceptableMarriage: ["Never married", "Divorced", "Widowed"],
+    baldnessPreference: "Any" as const,
+  };
+
+  it("calculates nationwide denominator when targetRegions is omitted or empty", () => {
+    const res = calculateDatingPool(baseInput);
+    expect(res.scopedRegionLabel).toBe("All UK");
+    expect(res.scopedPopulation).toBe(res.basePopulation);
+    expect(res.scopedMatches).toBe(res.estimatedMatches);
+  });
+
+  it("restricts denominator and match pool when London is targeted", () => {
+    const res = calculateDatingPool({ ...baseInput, targetRegions: ["London"] });
+    expect(res.scopedRegionLabel).toBe("London");
+    expect(res.scopedPopulation).toBeLessThan(res.basePopulation);
+    expect(res.scopedMatches).toBeLessThan(res.estimatedMatches);
+    expect(res.scopedMatches).toBeGreaterThan(0);
+  });
+});
+
+describe("sensitivity and trade-offs analysis", () => {
+  it("generates actionable relaxation recommendations with positive multipliers", () => {
+    const strictInput = {
+      userGender: "Female" as const,
+      orientation: "Heterosexual/Straight" as const,
+      lookingFor: "Male" as const,
+      ageRange: [28, 35] as [number, number],
+      minHeightCm: 183, // 6'0"+
+      maxHeightCm: 210,
+      minIncome: 75000,
+      educationLevel: "Undergraduate degree",
+      selectedEthnicities: Object.keys(ETHNICITY_DISTRIBUTION.value),
+      selectedBodyTypes: ["Healthy weight (BMI 18.5-24.9)"],
+      mustBeSingle: true,
+      acceptableChildren: ["No children"],
+      acceptableMarriage: ["Never married"],
+      baldnessPreference: "Not bald" as const,
+    };
+
+    const res = calculateDatingPool(strictInput);
+    expect(res.tradeOffs.length).toBeGreaterThan(0);
+
+    const incomeTradeOff = res.tradeOffs.find((t) => t.filter === "Income");
+    expect(incomeTradeOff).not.toBeNull();
+    if (incomeTradeOff) {
+      expect(incomeTradeOff.multiplier).toBeGreaterThan(1.0);
+      expect(incomeTradeOff.gainMatches).toBeGreaterThan(0);
+      expect(incomeTradeOff.newMatches).toBeGreaterThan(incomeTradeOff.currentMatches);
+    }
+  });
+});
+
+describe("age-stratified bivariate distributions sum to 1.0", () => {
+  const ageBands = ["18-24", "25-34", "35-44", "45-54", "55-64", "65+"];
+
+  for (const band of ageBands) {
+    it(`male income for ${band} sums to 1.0`, () => {
+      expect(sum(INCOME_DISTRIBUTION_BY_AGE_MALE.value[band])).toBeCloseTo(1.0, 6);
+    });
+    it(`female income for ${band} sums to 1.0`, () => {
+      expect(sum(INCOME_DISTRIBUTION_BY_AGE_FEMALE.value[band])).toBeCloseTo(1.0, 6);
+    });
+    it(`education for ${band} sums to 1.0`, () => {
+      expect(sum(EDUCATION_DISTRIBUTION_BY_AGE.value[band])).toBeCloseTo(1.0, 6);
+    });
+  }
+});
+
+describe("bivariate age-income conditioning eliminates young high-earner distortion", () => {
+  it("young male cohort (18-24) earning £75k+ is under 0.3% (eliminating 20x overcount)", () => {
+    const youngProb = incomeProbability(75000, "Male", [18, 24]);
+    expect(youngProb).toBeLessThan(0.003); // < 0.3%
+    expect(youngProb).toBeGreaterThan(0.001); // > 0.1%
+  });
+
+  it("prime earning male cohort (45-54) earning £75k+ reflects peak earnings (>10%)", () => {
+    const primeProb = incomeProbability(75000, "Male", [45, 54]);
+    expect(primeProb).toBeGreaterThan(0.12); // > 12%
+    expect(primeProb).toBeLessThan(0.20); // < 20%
+  });
+
+  it("full adult age range (18-99) matches national marginal distribution", () => {
+    const nationalProb = incomeProbability(75000, "Male");
+    const conditionedAllAdults = incomeProbability(75000, "Male", [18, 99]);
+    expect(conditionedAllAdults).toBeCloseTo(nationalProb, 3);
+  });
+});
+
+describe("bivariate age-education conditioning reflects cohort drift", () => {
+  it("young adult cohort (25-34) has elevated Level 4+ degree attainment (~47%)", () => {
+    const youngDegree = educationProbability("Undergraduate degree", [25, 34]);
+    expect(youngDegree).toBeGreaterThan(0.40);
+    expect(youngDegree).toBeLessThan(0.55);
+  });
+
+  it("older cohort (65+) has lower Level 4+ degree attainment (<22%)", () => {
+    const olderDegree = educationProbability("Undergraduate degree", [65, 99]);
+    expect(olderDegree).toBeLessThan(0.22);
+    expect(olderDegree).toBeGreaterThan(0.14);
+  });
+
+  it("full adult age range (18-99) matches national degree attainment (~33.8%)", () => {
+    const nationalDegree = educationProbability("Undergraduate degree");
+    const conditionedAllAdults = educationProbability("Undergraduate degree", [18, 99]);
+    expect(conditionedAllAdults).toBeCloseTo(nationalDegree, 2);
+  });
+});
+
+describe("confidence intervals and demographic error propagation", () => {
+  it("generates strictly positive 90% error bounds where low <= estimatedMatches <= high", () => {
+    const ci = calculateConfidenceInterval(10000, 5, false);
+    expect(ci.low).toBeGreaterThan(0);
+    expect(ci.high).toBeGreaterThan(ci.low);
+    expect(ci.low).toBeLessThanOrEqual(10000);
+    expect(ci.high).toBeGreaterThanOrEqual(10000);
+    expect(ci.relativeMarginPct).toBeGreaterThan(5);
+    expect(ci.relativeMarginPct).toBeLessThan(40);
+  });
+
+  it("calculator result populates confidenceInterval, scopedMatchesLow, and scopedMatchesHigh", () => {
+    const input: CalculatorInput = {
+      userGender: "Female",
+      orientation: "Heterosexual/Straight",
+      lookingFor: "Male",
+      ageRange: [25, 35],
+      minHeightCm: 175,
+      maxHeightCm: 210,
+      minIncome: 40000,
+      educationLevel: "Undergraduate degree",
+      selectedEthnicities: Object.keys(ETHNICITY_DISTRIBUTION.value),
+      selectedBodyTypes: ["Healthy weight (BMI 18.5-24.9)", "Overweight (BMI 25-29.9)"],
+      mustBeSingle: true,
+      acceptableChildren: Object.keys(CHILDREN_DISTRIBUTION.value),
+      acceptableMarriage: ["Never married", "Divorced", "Widowed"],
+      baldnessPreference: "Any",
+    };
+    const res = calculateDatingPool(input);
+    expect(res.confidenceInterval.low).toBeGreaterThan(0);
+    expect(res.confidenceInterval.high).toBeGreaterThan(res.confidenceInterval.low);
+    expect(res.scopedMatchesLow).toBeGreaterThan(0);
+    expect(res.scopedMatchesHigh).toBeGreaterThan(res.scopedMatchesLow);
+  });
+});
+
+
