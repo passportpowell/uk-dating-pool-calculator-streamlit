@@ -1,0 +1,33 @@
+{
+  "name": "uk-dating-pool-calculator",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build --webpack",
+    "start": "next start",
+    "lint": "eslint src scripts tests eslint.config.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test src/lib/calculator.test.ts",
+    "verify:evidence": "node scripts/data/verify-evidence.mjs"
+  },
+  "dependencies": {
+    "next": "16.4.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "tailwindcss": "^4",
+    "tsx": "^4.23.15",
+    "typescript": "^5",
+    "typescript-eslint": "^8.71.2"
+  }
+}

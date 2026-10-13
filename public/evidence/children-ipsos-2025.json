@@ -1,0 +1,53 @@
+{
+  "status": "reference_only_not_a_joint_parenthood_distribution",
+  "title": "Ipsos Royal Foundation Annual Perceptions 2025: children and parental responsibility",
+  "publisher": "Ipsos UK",
+  "geography": "United Kingdom",
+  "population": "UK adults aged 16+ in the general population online survey",
+  "weightedBase": 4672,
+  "unweightedBase": 4672,
+  "fieldwork": "30 April to 13 May 2025 in article; 30 April to 15 May 2025 on table headers",
+  "articleUrl": "https://www.ipsos.com/en-uk/95-public-believe-early-childhood-crucial-shaping-persons-future-yet-many-parents-struggle-modern",
+  "sourceUrl": "https://www.ipsos.com/sites/default/files/ct/news/documents/2026-01/j25-023254-tabs-draft-IntUse-gp-wtd-v9.tab_.pdf",
+  "sha256": "847fcaa6f17e40560cf4d3a0ac8d233ae7a45851541b90d6f644c4f2c7daf4fd",
+  "sourceBytes": 37970632,
+  "tables": {
+    "QD6": {
+      "tableRef": "Table 636, PDF page 172",
+      "question": "How many children aged 17 or under do you live with, if any, for whom you have parental responsibility? Please include any children who live with you on either a permanent or temporary basis.",
+      "columns": ["All", "Male", "Female", "16-34", "35-54", "55+", "16-24", "25-34", "35-44", "45-54", "55-64", "65-74", "75+"],
+      "weightedBase": [4672, 2278, 2390, 1373, 1487, 1813, 607, 766, 751, 736, 736, 727, 349],
+      "unweightedBase": [4672, 2268, 2390, 1372, 1470, 1830, 611, 761, 733, 737, 745, 732, 353],
+      "weightedCounts": {
+        "one": [672, 340, 333, 266, 338, 68, 91, 176, 178, 160, 53, 10, 5],
+        "two": [626, 342, 284, 258, 347, 21, 46, 212, 216, 131, 15, 6, 0],
+        "three": [126, 50, 76, 45, 79, 1, 11, 35, 58, 21, 0, 1, 0],
+        "fourPlus": [21, 10, 11, 4, 16, 1, 1, 3, 13, 4, 1, 0, 0],
+        "any": [1446, 742, 703, 574, 781, 92, 149, 425, 465, 316, 69, 18, 5],
+        "none": [3226, 1536, 1687, 799, 706, 1721, 459, 341, 286, 420, 667, 710, 344]
+      }
+    },
+    "QD9": {
+      "tableRef": "Table 651, PDF page 175",
+      "question": "Do you have any children aged 17 or under who are not currently living with you?",
+      "weightedCounts": {"yes": 489, "no": 4164, "preferNotToSay": 19},
+      "unweightedCounts": {"yes": 468, "no": 4182, "preferNotToSay": 22}
+    },
+    "QD10": {
+      "tableRef": "Table 656, PDF page 176",
+      "question": "And do you have any children aged 18 or over? Please include any children who live with you or who live elsewhere.",
+      "weightedCounts": {"liveWithMe": 791, "liveElsewhere": 1339, "no": 2663, "preferNotToSay": 31, "netYes": 1977},
+      "note": "Multiple response question: live-with-me and live-elsewhere overlap. Do not add them."
+    }
+  },
+  "limitations": [
+    "Published sex and age columns are separate marginals, not jointly conditioned sex-by-age rows.",
+    "The youngest age band is 16-24, so it cannot establish an exact 18-24 adult rate.",
+    "QD6 measures parental responsibility for under-18s living permanently or temporarily with the respondent. It is not all children ever had and not precisely the Census dependent-child definition.",
+    "Adopted children are not excluded by QD6 wording, but adoption is not explicitly identified in the published question. Coverage cannot be certified separately.",
+    "QD9 and QD10 measure children living elsewhere, but their intersection with QD6 is not available in these demographic tables. Do not derive all-age no-children shares by adding or multiplying their marginals.",
+    "Rounded weighted counts may not add exactly. Preserve published counts rather than redistributing rounding or nonresponse.",
+    "No number of different co-parents is measured.",
+    "This reference does not justify applying the old fixed 43% no-children multiplier."
+  ]
+}

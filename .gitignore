@@ -13,7 +13,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+/lib/
 lib64/
 parts/
 sdist/
@@ -51,9 +51,14 @@ Thumbs.db
 .venv
 
 #add files containing copy Copy is in the filename
-*Copy*
-*copy*
-*COPY*
 * - Copy.*
 * - copy.*
 * - COPY.*  
+
+# Archived legacy files
+archive/
+scratch/
+.env.*
+!.env.example
+.vercel/
+/public/evidence/sources/ipsos-parenthood-2025.pdf
